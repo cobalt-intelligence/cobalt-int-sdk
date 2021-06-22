@@ -28,38 +28,7 @@ export class SosApi {
 
         return axiosResponse.data;
     }
-
-    public async getBulkBusinessDetails(businesses: IBusiness[]) {
-        const promises: any[] = [];
-        const businessesReturn: any[] = [];
-
-        for (let i = 0; i < businesses.length; i++) {
-            promises.push(this.getBusinessDetails(businesses[i].businessName, businesses[i].state).then(businessDetails => {
-                console.log('Completed for', businesses[i], 'Response', businessDetails);
-                businessesReturn.push(businessDetails);
-            }));
-        }
-
-        await Promise.all(promises);
-
-        return businessesReturn;
-
-
-    }
-
-    public streamTest() {
-        const readStream = new Readable();
-
-        setTimeout(() => {
-            console.log('about to push');
-            readStream.push('pizza');
-        }, 2500);
-
-        readStream.push(null);
-        
-        return readStream;
-    }
-
+    
     private async retryBusinessDetails(retryId: string) {
         const url = `https://apigateway.cobaltintelligence.com/search?retryId=${retryId}`;
 

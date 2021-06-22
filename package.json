@@ -2,15 +2,17 @@
   "name": "cobalt-int-sdk",
   "version": "1.0.0",
   "description": "Wrapper around Cobalt Intelligence services, such as the Secretary of State API.",
-  "main": "./dist/index",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "jest",
-    "start": "tsc && node ./dist/example"
+    "start": "tsc && node ./dist/example",
+    "prepublish": "tsc"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cobalt-intelligence/cobalt-int-sdk.git"
   },
+  "types": "index.d.ts",
   "keywords": [
     "secretary",
     "of",
