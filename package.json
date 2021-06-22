@@ -6,13 +6,13 @@
   "scripts": {
     "test": "jest",
     "start": "tsc && node ./dist/example",
-    "prepublish": "tsc"
+    "prepublish": "rm -rf ./dist && tsc && npm version patch"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cobalt-intelligence/cobalt-int-sdk.git"
   },
-  "types": "index.d.ts",
+  "types": "./dist/index.d.ts",
   "keywords": [
     "secretary",
     "of",
