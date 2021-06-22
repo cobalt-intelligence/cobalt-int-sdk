@@ -13,7 +13,7 @@ export class SosApi {
      * @returns 
      */
     public async getBusinessDetails(businessName: string, state: string) {
-        const url = `https://apigateway.cobaltintelligence.com/search?searchQuery=${businessName}&state=${state}`;
+        const url = `https://apigateway.cobaltintelligence.com/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
 
         const axiosResponse = await axios.get(url, {
             headers: {
@@ -28,7 +28,7 @@ export class SosApi {
 
         return axiosResponse.data;
     }
-    
+
     private async retryBusinessDetails(retryId: string) {
         const url = `https://apigateway.cobaltintelligence.com/search?retryId=${retryId}`;
 
