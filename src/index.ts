@@ -29,6 +29,30 @@ export class SosApi {
         return axiosResponse.data;
     }
 
+    /**
+     * This function will handle any long polling and return the business details of any business
+     * if found.
+     * @param sosId 
+     * @param state 
+     * @returns 
+     */
+    public async getBusinessDetailsBySosId(sosId: string, state: string) {
+        const url = `https://apigateway.cobaltintelligence.com/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
+
+        const axiosResponse = await axios.get(url, {
+            headers: {
+                'x-api-key': this.apiKey
+            }
+        });
+
+        // This will take longer
+        if (axiosResponse.data?.retryId) {
+            return await this.retryBusinessDetails(axiosResponse.data.retryId);
+        }
+
+        return axiosResponse.data;
+    }
+
     private async retryBusinessDetails(retryId: string) {
         const url = `https://apigateway.cobaltintelligence.com/search?retryId=${retryId}`;
 
