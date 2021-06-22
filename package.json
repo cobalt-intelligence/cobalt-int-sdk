@@ -1,0 +1,37 @@
+{
+  "name": "cobalt-int-sdk",
+  "version": "1.0.0",
+  "description": "Wrapper around Cobalt Intelligence services, such as the Secretary of State API.",
+  "main": "./dist/index",
+  "scripts": {
+    "test": "jest",
+    "start": "tsc && node ./dist/example"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cobalt-intelligence/cobalt-int-sdk.git"
+  },
+  "keywords": [
+    "secretary",
+    "of",
+    "state",
+    "api",
+    "cobalt",
+    "intelligence"
+  ],
+  "author": "Jordan Hansen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cobalt-intelligence/cobalt-int-sdk/issues"
+  },
+  "homepage": "https://github.com/cobalt-intelligence/cobalt-int-sdk#readme",
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/node": "^15.12.4",
+    "dotenv": "^10.0.0",
+    "typescript": "^4.3.4"
+  }
+}
