@@ -1,13 +1,15 @@
 import { SosApi } from ".";
 import dotenv from 'dotenv';
 import { IBusiness } from "./models";
+import { DelinquentTaxApi } from "./delinquentTaxApi";
+import { count } from "console";
 
 dotenv.config();
 
 (async () => {
     // Texas uses long polling
     // await getDetails('IRON GROUND TRUCKING LLC', 'texas');
-    
+
     // Delaware uses long polling
     // await getDetails('SUPERIOR BUILDING SERVICES, INC.', 'delaware');
 
@@ -23,12 +25,15 @@ dotenv.config();
 
     // sosId with colorado
     // await getDetailsBySosId('20151458554', 'colorado');
-    
+
     // sosId with california
     // await getDetailsBySosId('C0363631', 'california');
 
     // sosId with Delaware
-    await getDetailsBySosId('2011864', 'delaware');
+    // await getDetailsBySosId('2011864', 'delaware');
+
+    // Delinquent Taxes
+    await getDelinquentTaxes();
 
 })();
 
@@ -46,4 +51,12 @@ async function getDetailsBySosId(businessName: string, state: string) {
     const details = await sosApi.getBusinessDetailsBySosId(businessName, state);
 
     console.log('details', details);
+}
+
+async function getDelinquentTaxes() {
+    const delinquentTaxApi = new DelinquentTaxApi(process.env.cobaltIntApiKey);
+
+    const response = await delinquentTaxApi.getDelinquentTaxes({county: 'tarrant', greaterThan: 500});
+
+    console.log('Records', response.totalRecords);
 }

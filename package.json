@@ -4,7 +4,6 @@
   "description": "Wrapper around Cobalt Intelligence services, such as the Secretary of State API.",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "jest",
     "start": "rm -rf ./dist && tsc && node ./dist/example",
     "prepare": "rm -rf ./dist && tsc && npm version patch"
   },
