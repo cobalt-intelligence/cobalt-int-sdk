@@ -1,14 +1,36 @@
 import axios from 'axios';
 
 export interface GetDelinquentTaxInput {
+    /**
+     * Used by the SDK. Users should ignore.
+     */
     nextPageKey?: any;
+    /**
+     * Allows you to search by parcel id
+     */
     taxAccountNumber?: string;
+    /**
+     * The state from which you wish to get parcels with delinquent taxes. Either this or county is required.
+     */
     state?: string;
+    /**
+     * The county from which you wish to get parcels with delinquent taxes. Either this or state is required.
+     */
     county?: string;
+    /**
+     * Total tax due greater than this number.
+     */
     greaterThan?: number;
+    /**
+     * Total tax due less than this number.
+     */
     lessThan?: number;
+    /**
+     * The total tax dude
+     */
     totalDue?: number;
     /**
+     * Which years the parcel is delinquent.
      * Something like [2018, 2019]
      */
     delinquentYears?: number[];

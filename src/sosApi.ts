@@ -52,6 +52,12 @@ export class SosApi {
         return axiosResponse.data;
     }
 
+    /**
+     * This function allows you to send a business name and search all available states for instances
+     * of this business.
+     * @param businessName 
+     * @returns 
+     */
     public async searchAllStatesByBusinessName(businessName: string) {
         // Get all available states from sos-search-index
         const indexUrl = 'https://apigateway.cobaltintelligence.com/search/index';
