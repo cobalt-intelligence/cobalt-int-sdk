@@ -33,7 +33,10 @@ dotenv.config();
     // await getDetailsBySosId('2011864', 'delaware');
 
     // Delinquent Taxes
-    await getDelinquentTaxes();
+    // await getDelinquentTaxes();
+
+    // test searchAllStatesByBusinessName
+    await searchAllStates();
 
 })();
 
@@ -59,4 +62,13 @@ async function getDelinquentTaxes() {
     const response = await delinquentTaxApi.getDelinquentTaxes({county: 'tarrant', greaterThan: 500});
 
     console.log('Records', response.totalRecords);
+}
+
+async function searchAllStates() {
+    const sosApi = new SosApi(process.env.cobaltIntApiKey);
+
+    const results = await sosApi.searchAllStatesByBusinessName('pizza hut llc');
+
+    console.log('Results', results);
+
 }

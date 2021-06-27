@@ -52,6 +52,38 @@ export class SosApi {
         return axiosResponse.data;
     }
 
+    public async searchAllStatesByBusinessName(businessName: string) {
+        // Get all available states from sos-search-index
+        const indexUrl = 'https://apigateway.cobaltintelligence.com/search/index';
+
+        const indexAxiosResponse = await axios.get(indexUrl, {
+            headers: {
+                'x-api-key': this.apiKey
+            }
+        });
+
+        const states: {functionName: string;}[] = indexAxiosResponse.data;
+
+        const results: any[] = [];
+        const promises: any[] = [];
+
+        for (let i = 0; i < states.length; i++) {
+            const state = states[i].functionName.split('-')[0];
+
+            promises.push(this.getBusinessDetails(businessName, state).then((result) => {
+                console.log('Results from', state, result);
+                results.push({
+                    state: state,
+                    result: result
+                });
+            }));            
+        }
+
+        await Promise.all(promises);
+
+        return results;
+    }
+
     private async retryBusinessDetails(retryId: string) {
         const url = `https://apigateway.cobaltintelligence.com/search?retryId=${retryId}`;
 
