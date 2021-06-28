@@ -101,7 +101,7 @@ interface GetDelinquentTaxInput {
      */
     lessThan?: number;
     /**
-     * The total tax dude
+     * The total tax due.
      */
     totalDue?: number;
     /**
