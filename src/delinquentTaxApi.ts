@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { IParcel } from 'cobalt-int-common';
 
 export interface GetDelinquentTaxInput {
     /**
@@ -39,13 +40,13 @@ export interface GetDelinquentTaxInput {
 export class DelinquentTaxApi {
     constructor(private apiKey: string) { }
 
-    public async getDelinquentTaxes(getDelinquentTaxInput: GetDelinquentTaxInput, records: any[] = []) {
+    public async getDelinquentTaxes(getDelinquentTaxInput: GetDelinquentTaxInput, records: any[] = []): Promise<{totalRecords: number; records: IParcel[]}> {
         let url = `https://apigateway.cobaltintelligence.com/taxDelinquent?`;
 
         if (!getDelinquentTaxInput.nextPageKey
             && !getDelinquentTaxInput.county
             && !getDelinquentTaxInput.state) {
-            return { message: 'Either county or state is required.' };
+            throw 'Either county or state is required.';
         }
 
         const searchParams = new URLSearchParams(getDelinquentTaxInput as any);
