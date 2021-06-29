@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IBusiness } from './models';
+import { IBusiness } from 'cobalt-int-common';
 
 export class SosApi {
     constructor(private apiKey: string) { }
@@ -11,7 +11,7 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetails(businessName: string, state: string) {
+    public async getBusinessDetails(businessName: string, state: string): Promise<IBusiness> {
         const url = `https://apigateway.cobaltintelligence.com/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
 
         const axiosResponse = await axios.get(url, {
@@ -35,7 +35,7 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetailsBySosId(sosId: string, state: string) {
+    public async getBusinessDetailsBySosId(sosId: string, state: string): Promise<IBusiness> {
         const url = `https://apigateway.cobaltintelligence.com/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
 
         const axiosResponse = await axios.get(url, {
@@ -70,7 +70,7 @@ export class SosApi {
 
         const states: {functionName: string;}[] = indexAxiosResponse.data;
 
-        const results: any[] = [];
+        const results: {state: string; result: IBusiness}[] = [];
         const promises: any[] = [];
 
         for (let i = 0; i < states.length; i++) {

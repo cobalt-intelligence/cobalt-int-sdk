@@ -1,8 +1,6 @@
 import { SosApi } from ".";
 import dotenv from 'dotenv';
-import { IBusiness } from "./models";
 import { DelinquentTaxApi } from "./delinquentTaxApi";
-import { count } from "console";
 
 dotenv.config();
 
@@ -21,7 +19,7 @@ dotenv.config();
     // await getDetails('STOKESBERRY TRUCKING LLC', 'missouri');
 
     // Colorado
-    // await getDetails('Amici Pizza & Pasta', 'colorado');
+    await getDetails('Amici Pizza & Pasta', 'colorado');
 
     // sosId with colorado
     // await getDetailsBySosId('20151458554', 'colorado');
@@ -36,7 +34,7 @@ dotenv.config();
     // await getDelinquentTaxes();
 
     // test searchAllStatesByBusinessName
-    await searchAllStates();
+    // await searchAllStates();
 
 })();
 
@@ -59,9 +57,9 @@ async function getDetailsBySosId(businessName: string, state: string) {
 async function getDelinquentTaxes() {
     const delinquentTaxApi = new DelinquentTaxApi(process.env.cobaltIntApiKey);
 
-    const response = await delinquentTaxApi.getDelinquentTaxes({county: 'tarrant', greaterThan: 500});
+    const response = await delinquentTaxApi.getDelinquentTaxes({county: 'ada', greaterThan: 500, delinquentYears: [2018]});
 
-    console.log('Records', response.totalRecords);
+    console.log('Records', response.totalRecords, response.records[0], response.records[25]);
 }
 
 async function searchAllStates() {
