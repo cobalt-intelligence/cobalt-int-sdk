@@ -93,6 +93,10 @@ interface GetDelinquentTaxInput {
      */
     county?: string;
     /**
+     * The city from which you wish to get parcels with delinquent taxes.
+     */
+    city?: string;
+    /**
      * Total tax due greater than this number.
      */
     greaterThan?: number;
