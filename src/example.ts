@@ -2,6 +2,7 @@ import { SosApi } from ".";
 import dotenv from 'dotenv';
 import { DelinquentTaxApi } from "./delinquentTaxApi";
 import { IParcel } from "cobalt-int-common";
+import { CountyAssessorApi } from "./countyAssessorApi";
 
 dotenv.config();
 
@@ -36,7 +37,9 @@ dotenv.config();
     // await getDetails('PRECISE SERVICES LLC', 'idaho');
     
     // Get by sosId
-    await getDetailsBySosId('773409', 'idaho');
+    // await getDetailsBySosId('773409', 'idaho');
+
+    await getParcelInformation('00000249748000000', 'dallas', 'tx');
 
 })();
 
@@ -71,4 +74,12 @@ async function searchAllStates() {
 
     console.log('Results', results);
 
+}
+
+async function getParcelInformation(parcelNumber: string, county: string, state: string) {
+    const countyAssessorApi = new CountyAssessorApi(process.env.cobaltIntApiKey);
+
+    const parcel = await countyAssessorApi.getParcelInformation(parcelNumber, county, state);
+
+    console.log('parcel', parcel);
 }
