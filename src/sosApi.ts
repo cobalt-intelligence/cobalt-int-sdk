@@ -99,7 +99,7 @@ export class SosApi {
         return results;
     }
 
-    private async retryBusinessDetails(retryId: string) {
+    private async retryBusinessDetails(retryId: string, retryCount = 0) {
         let url = `https://apigateway.cobaltintelligence.com/search?retryId=${retryId}`;
 
         if (this.targetedEnvironment) {
@@ -112,7 +112,13 @@ export class SosApi {
             }
         });
 
+        // Functions timeout after 90 seconds
+        if (retryCount > 90) {
+            return { message: 'Passed 90 seconds of retries. Something must have gone wrong. Sorry.' };
+        }
+
         if (axiosResponse.data?.message === 'Item not complete. Try again in a few moments.') {
+            console.log('Retrying. Total retry attempts', retryCount);
             // Item not ready yet
             // We wait 10 seconds and then try again
             await this.timeout(10000);
