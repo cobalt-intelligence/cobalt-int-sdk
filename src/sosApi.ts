@@ -2,7 +2,7 @@ import axios from 'axios';
 import { IBusiness } from 'cobalt-int-common';
 
 export class SosApi {
-    constructor(private apiKey: string) { }
+    constructor(private apiKey: string, private targetedEnvironment = null) { }
 
     /**
      * This function will handle any long polling and return the business details of any business
@@ -12,7 +12,12 @@ export class SosApi {
      * @returns 
      */
     public async getBusinessDetails(businessName: string, state: string): Promise<IBusiness> {
-        const url = `https://apigateway.cobaltintelligence.com/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
+        let url = `https://apigateway.cobaltintelligence.com/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
+
+        if (this.targetedEnvironment) {
+            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
+        }
+
 
         const axiosResponse = await axios.get(url, {
             headers: {
@@ -36,7 +41,11 @@ export class SosApi {
      * @returns 
      */
     public async getBusinessDetailsBySosId(sosId: string, state: string): Promise<IBusiness> {
-        const url = `https://apigateway.cobaltintelligence.com/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
+        let url = `https://apigateway.cobaltintelligence.com/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
+
+        if (this.targetedEnvironment) {
+            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
+        }
 
         const axiosResponse = await axios.get(url, {
             headers: {
@@ -68,9 +77,9 @@ export class SosApi {
             }
         });
 
-        const states: {functionName: string;}[] = indexAxiosResponse.data;
+        const states: { functionName: string; }[] = indexAxiosResponse.data;
 
-        const results: {state: string; result: IBusiness}[] = [];
+        const results: { state: string; result: IBusiness }[] = [];
         const promises: any[] = [];
 
         for (let i = 0; i < states.length; i++) {
@@ -82,7 +91,7 @@ export class SosApi {
                     state: state,
                     result: result
                 });
-            }));            
+            }));
         }
 
         await Promise.all(promises);
@@ -91,7 +100,11 @@ export class SosApi {
     }
 
     private async retryBusinessDetails(retryId: string) {
-        const url = `https://apigateway.cobaltintelligence.com/search?retryId=${retryId}`;
+        let url = `https://apigateway.cobaltintelligence.com/search?retryId=${retryId}`;
+
+        if (this.targetedEnvironment) {
+            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?retryId=${retryId}`;
+        }
 
         const axiosResponse = await axios.get(url, {
             headers: {
