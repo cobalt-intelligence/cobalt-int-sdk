@@ -18,7 +18,6 @@ export class SosApi {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
         }
 
-
         const axiosResponse = await axios.get(url, {
             headers: {
                 'x-api-key': this.apiKey
@@ -119,10 +118,11 @@ export class SosApi {
 
         if (axiosResponse.data?.message === 'Item not complete. Try again in a few moments.') {
             console.log('Retrying. Total retry attempts', retryCount);
+            retryCount++;
             // Item not ready yet
             // We wait 10 seconds and then try again
             await this.timeout(10000);
-            return await this.retryBusinessDetails(retryId);
+            return await this.retryBusinessDetails(retryId, retryCount);
         }
 
         return axiosResponse.data;
