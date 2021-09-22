@@ -43,7 +43,7 @@ dotenv.config();
 })();
 
 async function getDetails(businessName: string, state: string, liveData?: boolean) {
-    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
+    const sosApi = new SosApi(process.env.cobaltIntApiKey);
 
     const details = await sosApi.getBusinessDetails(businessName, state, liveData);
 
@@ -51,7 +51,7 @@ async function getDetails(businessName: string, state: string, liveData?: boolea
 }
 
 async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean) {
-    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
+    const sosApi = new SosApi(process.env.cobaltIntApiKey);
 
     const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData);
 
