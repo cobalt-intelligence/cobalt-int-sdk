@@ -29,6 +29,15 @@ With your API key, initialize the package:
 Get business details from the SosApi:
 
 `const details = await sosApi.getBusinessDetails(businessName, state);`
+
+By default the API will search its database for the business. If it doesn't find it, it will query the state directly.
+
+You can also force the API to query live data by adding the liveData parameter. This will ensure you have the most up to date data but takes considerably longer.
+
+```
+const liveData = true;
+const details = await sosApi.getBusinessDetails(businessName, state, liveData);
+```
 ### `getBusinessDetails`
 
 This is allows you to search by business name and state.

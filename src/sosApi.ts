@@ -11,11 +11,15 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetails(businessName: string, state: string): Promise<IBusiness> {
+    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean): Promise<IBusiness[]> {
         let url = `https://apigateway.cobaltintelligence.com/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
+        }
+
+        if (liveData) {
+            url += '&liveData=true';
         }
 
         const axiosResponse = await axios.get(url, {
@@ -39,11 +43,15 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetailsBySosId(sosId: string, state: string): Promise<IBusiness> {
+    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean): Promise<IBusiness[]> {
         let url = `https://apigateway.cobaltintelligence.com/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
 
         if (this.targetedEnvironment) {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
+        }
+
+        if (liveData) {
+            url += '&liveData=true';
         }
 
         const axiosResponse = await axios.get(url, {
@@ -78,7 +86,7 @@ export class SosApi {
 
         const states: { functionName: string; }[] = indexAxiosResponse.data;
 
-        const results: { state: string; result: IBusiness }[] = [];
+        const results: { state: string; result: IBusiness | IBusiness[] }[] = [];
         const promises: any[] = [];
 
         for (let i = 0; i < states.length; i++) {
@@ -88,7 +96,7 @@ export class SosApi {
                 console.log('Results from', state, result);
                 results.push({
                     state: state,
-                    result: result
+                    result: result.length > 0 ? result[0] : result
                 });
             }));
         }
