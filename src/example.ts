@@ -31,30 +31,29 @@ dotenv.config();
 
     // test searchAllStatesByBusinessName
     // await searchAllStates();
-
     
     // Get by name
-    // await getDetails('PRECISE SERVICES LLC', 'idaho');
+    // await getDetails('garcia', 'ny', true);
     
     // Get by sosId
-    // await getDetailsBySosId('773409', 'idaho');
+    await getDetailsBySosId('4889489', null);
 
-    await getParcelInformation('00000249748000000', 'dallas', 'tx');
+    // await getParcelInformation('00000249748000000', 'dallas', 'tx');
 
 })();
 
-async function getDetails(businessName: string, state: string) {
+async function getDetails(businessName: string, state: string, liveData?: boolean) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey);
 
-    const details = await sosApi.getBusinessDetails(businessName, state);
+    const details = await sosApi.getBusinessDetails(businessName, state, liveData);
 
     console.log('details', details);
 }
 
-async function getDetailsBySosId(sosId: string, state: string) {
+async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey);
 
-    const details = await sosApi.getBusinessDetailsBySosId(sosId, state);
+    const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData);
 
     console.log('details', details);
 }
