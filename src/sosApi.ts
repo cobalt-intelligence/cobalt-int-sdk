@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IBusiness } from 'cobalt-int-common';
+import { IBusiness, IResponseBody } from 'cobalt-int-common';
 
 export class SosApi {
     constructor(private apiKey: string, private targetedEnvironment = null) { }
@@ -11,8 +11,8 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean): Promise<IBusiness[]> {
-        let url = `https://apigateway.cobaltintelligence.com/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
+    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean): Promise<IResponseBody> {
+        let url = `https://apigateway.cobaltintelligence.com/v1/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
@@ -43,8 +43,8 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean): Promise<IBusiness[]> {
-        let url = `https://apigateway.cobaltintelligence.com/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
+    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean): Promise<IResponseBody> {
+        let url = `https://apigateway.cobaltintelligence.com/v1/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
 
         if (this.targetedEnvironment) {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
@@ -76,7 +76,7 @@ export class SosApi {
      */
     public async searchAllStatesByBusinessName(businessName: string) {
         // Get all available states from sos-search-index
-        const indexUrl = 'https://apigateway.cobaltintelligence.com/search/index';
+        const indexUrl = 'https://apigateway.cobaltintelligence.com/v1/search/index';
 
         const indexAxiosResponse = await axios.get(indexUrl, {
             headers: {
@@ -86,7 +86,7 @@ export class SosApi {
 
         const states: { functionName: string; }[] = indexAxiosResponse.data;
 
-        const results: { state: string; result: IBusiness | IBusiness[] }[] = [];
+        const results: { state: string; result: IBusiness | string }[] = [];
         const promises: any[] = [];
 
         for (let i = 0; i < states.length; i++) {
@@ -96,7 +96,7 @@ export class SosApi {
                 console.log('Results from', state, result);
                 results.push({
                     state: state,
-                    result: result.length > 0 ? result[0] : result
+                    result: result.results?.length > 0 ? result.results[0] : result.status
                 });
             }));
         }
@@ -107,7 +107,7 @@ export class SosApi {
     }
 
     private async retryBusinessDetails(retryId: string, retryCount = 0) {
-        let url = `https://apigateway.cobaltintelligence.com/search?retryId=${retryId}`;
+        let url = `https://apigateway.cobaltintelligence.com/v1/search?retryId=${retryId}`;
 
         if (this.targetedEnvironment) {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?retryId=${retryId}`;
@@ -124,7 +124,7 @@ export class SosApi {
             return { message: 'Passed 90 seconds of retries. Something must have gone wrong. Sorry.' };
         }
 
-        if (axiosResponse.data?.message === 'Item not complete. Try again in a few moments.') {
+        if (axiosResponse.data?.status === 'Incomplete') {
             console.log('Retrying. Total retry attempts', retryCount);
             retryCount++;
             // Item not ready yet
