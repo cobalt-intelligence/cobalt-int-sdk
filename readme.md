@@ -6,6 +6,8 @@ This package assists in accessing the APIs provided by Cobalt Intelligence.
 
 `npm install --save cobalt-int-sdk`
 
+View full API documentation here - https://cobaltintelligence.stoplight.io/docs/cobalt-intelligence/b3A6MjAxODIxMDU-secretary-of-state-api
+
 See examples here - https://github.com/cobalt-intelligence/cobalt-int-sdk/blob/master/src/example.ts
 
 This will make the request to the API and handle any long polling or pagination.

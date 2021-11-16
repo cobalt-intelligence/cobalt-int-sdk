@@ -33,10 +33,10 @@ dotenv.config();
     // await searchAllStates();
     
     // Get by name
-    // await getDetails('garcia', 'ny', true);
+    await getDetails('pizza', 'de', true);
     
     // Get by sosId
-    await getDetailsBySosId('4889489', null);
+    // await getDetailsBySosId('4889489', null);
 
     // await getParcelInformation('00000249748000000', 'dallas', 'tx');
 
