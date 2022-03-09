@@ -11,7 +11,7 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean): Promise<IResponseBody> {
+    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
@@ -20,6 +20,10 @@ export class SosApi {
 
         if (liveData) {
             url += '&liveData=true';
+        }
+
+        if (screenshot) {
+            url += '&screenshot=true';
         }
 
         const axiosResponse = await axios.get(url, {
@@ -43,7 +47,7 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean): Promise<IResponseBody> {
+    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
 
         if (this.targetedEnvironment) {
@@ -52,6 +56,10 @@ export class SosApi {
 
         if (liveData) {
             url += '&liveData=true';
+        }
+
+        if (screenshot) {
+            url += '&screenshot=true';
         }
 
         const axiosResponse = await axios.get(url, {
