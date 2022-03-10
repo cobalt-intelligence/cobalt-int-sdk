@@ -42,18 +42,18 @@ dotenv.config();
 
 })();
 
-async function getDetails(businessName: string, state: string, liveData?: boolean) {
+async function getDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey);
 
-    const details = await sosApi.getBusinessDetails(businessName, state, liveData);
+    const details = await sosApi.getBusinessDetails(businessName, state, liveData, screenshot);
 
     console.log('details', details);
 }
 
-async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean) {
+async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey);
 
-    const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData);
+    const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData, screenshot);
 
     console.log('details', details);
 }
