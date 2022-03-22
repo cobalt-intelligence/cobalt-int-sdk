@@ -34,7 +34,7 @@ export class SosApi {
 
         // This will take longer
         if (axiosResponse.data?.retryId) {
-            return await this.retryBusinessDetails(axiosResponse.data.retryId);
+            return await this.retryBusinessDetails(axiosResponse.data.retryId, 0, screenshot);
         }
 
         return axiosResponse.data;
@@ -70,7 +70,7 @@ export class SosApi {
 
         // This will take longer
         if (axiosResponse.data?.retryId) {
-            return await this.retryBusinessDetails(axiosResponse.data.retryId);
+            return await this.retryBusinessDetails(axiosResponse.data.retryId, 0, screenshot);
         }
 
         return axiosResponse.data;
@@ -114,11 +114,15 @@ export class SosApi {
         return results;
     }
 
-    private async retryBusinessDetails(retryId: string, retryCount = 0) {
+    private async retryBusinessDetails(retryId: string, retryCount = 0, screenshot?: boolean) {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?retryId=${retryId}`;
 
         if (this.targetedEnvironment) {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?retryId=${retryId}`;
+        }
+
+        if (screenshot) {
+            url += '&screenshot=true';
         }
 
         const axiosResponse = await axios.get(url, {
@@ -138,7 +142,7 @@ export class SosApi {
             // Item not ready yet
             // We wait 10 seconds and then try again
             await this.timeout(10000);
-            return await this.retryBusinessDetails(retryId, retryCount);
+            return await this.retryBusinessDetails(retryId, retryCount, screenshot);
         }
 
         return axiosResponse.data;
