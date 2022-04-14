@@ -33,27 +33,24 @@ dotenv.config();
     // await searchAllStates();
     
     // Get by name
-    await getDetails('pizza', 'de', true);
-    
-    // Get by sosId
-    // await getDetailsBySosId('4889489', null);
+    await getDetails('tax & accounting', 'nj', true, null, null, null, 'hightstown', null);
 
-    // await getParcelInformation('00000249748000000', 'dallas', 'tx');
+    // await getDetailsBySosId('937294', 'oh', true, true, true);
 
 })();
 
-async function getDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean) {
-    const sosApi = new SosApi(process.env.cobaltIntApiKey);
+async function getDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
+    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
 
-    const details = await sosApi.getBusinessDetails(businessName, state, liveData, screenshot);
+    const details = await sosApi.getBusinessDetails(businessName, state, liveData, screenshot, uccData, street, city, zip);
 
-    console.log('details', details);
+    console.log('details', details, details?.results?.[0]?.uccData);
 }
 
-async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean) {
-    const sosApi = new SosApi(process.env.cobaltIntApiKey);
+async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
+    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
 
-    const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData, screenshot);
+    const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData, screenshot, uccData, street, city, zip);
 
     console.log('details', details);
 }
