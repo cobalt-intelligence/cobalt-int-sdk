@@ -11,7 +11,7 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean): Promise<IResponseBody> {
+    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
@@ -28,6 +28,18 @@ export class SosApi {
 
         if (uccData) {
             url += '&uccData=true';
+        }
+
+        if (street) {
+            url += `&street=${street}`;
+        }
+
+        if (city) {
+            url += `&city=${city}`;
+        }
+
+        if (zip) {
+            url += `&zip=${zip}`;
         }
 
         const axiosResponse = await axios.get(url, {
@@ -51,7 +63,7 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean): Promise<IResponseBody> {
+    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
 
         if (this.targetedEnvironment) {
@@ -68,6 +80,18 @@ export class SosApi {
 
         if (uccData) {
             url += '&uccData=true';
+        }
+
+        if (street) {
+            url += `&street=${street}`;
+        }
+
+        if (city) {
+            url += `&city=${city}`;
+        }
+
+        if (zip) {
+            url += `&zip=${zip}`;
         }
 
         const axiosResponse = await axios.get(url, {
@@ -122,7 +146,7 @@ export class SosApi {
         return results;
     }
 
-    private async retryBusinessDetails(retryId: string, retryCount = 0, screenshot?: boolean, uccData?: boolean) {
+    private async retryBusinessDetails(retryId: string, retryCount = 0, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?retryId=${retryId}`;
 
         if (this.targetedEnvironment) {
@@ -135,6 +159,18 @@ export class SosApi {
 
         if (uccData) {
             url += '&uccData=true';
+        }
+
+        if (street) {
+            url += `&street=${street}`;
+        }
+
+        if (city) {
+            url += `&city=${city}`;
+        }
+
+        if (zip) {
+            url += `&zip=${zip}`;
         }
 
         const axiosResponse = await axios.get(url, {
