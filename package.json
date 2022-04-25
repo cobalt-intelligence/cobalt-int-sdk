@@ -1,6 +1,6 @@
 {
   "name": "cobalt-int-sdk",
-  "version": "1.0.21",
+  "version": "1.0.26",
   "description": "Wrapper around Cobalt Intelligence services, such as the Secretary of State API.",
   "main": "./dist/index.js",
   "scripts": {
@@ -28,7 +28,7 @@
   "homepage": "https://github.com/cobalt-intelligence/cobalt-int-sdk#readme",
   "dependencies": {
     "axios": "^0.21.1",
-    "cobalt-int-common": "^1.0.28"
+    "cobalt-int-common": "^1.0.33"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
