@@ -109,6 +109,38 @@ export class SosApi {
     }
 
     /**
+     * This function will handle any long polling and return the business details of any business
+     * if found.
+     * @param sosId 
+     * @param state 
+     * @returns 
+     */
+    public async getListBySearchQuery(businessName: string, state: string, liveData?: boolean): Promise<IResponseBody> {
+        let url = `https://apigateway.cobaltintelligence.com/v1/search/list?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
+
+        if (this.targetedEnvironment) {
+            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search/list?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
+        }
+
+        if (liveData) {
+            url += '&liveData=true';
+        }
+
+        const axiosResponse = await axios.get(url, {
+            headers: {
+                'x-api-key': this.apiKey
+            }
+        });
+
+        // This will take longer
+        if (axiosResponse.data?.retryId) {
+            return await this.retryBusinessDetails(axiosResponse.data.retryId, 0);
+        }
+
+        return axiosResponse.data;
+    }
+
+    /**
      * This function allows you to send a business name and search all available states for instances
      * of this business.
      * @param businessName 
