@@ -189,22 +189,6 @@ export class SosApi {
             url += '&screenshot=true';
         }
 
-        if (uccData) {
-            url += '&uccData=true';
-        }
-
-        if (street) {
-            url += `&street=${street}`;
-        }
-
-        if (city) {
-            url += `&city=${city}`;
-        }
-
-        if (zip) {
-            url += `&zip=${zip}`;
-        }
-
         const axiosResponse = await axios.get(url, {
             headers: {
                 'x-api-key': this.apiKey

@@ -33,24 +33,24 @@ dotenv.config();
     // await searchAllStates();
     
     // Get by name
-    // await getDetails('tax & accounting', 'nj', true, null, null, null, 'hightstown', null);
+    await getDetails('pizza tax sean', 'wy', true, true, null, null, null, null);
 
-    // await getDetailsBySosId('937294', 'oh', true, true, true);
+    // await getDetailsBySosId('2109131112324', 'sc', true, true, true);
 
-    await getListBySearchQuery('pizza', 'wy', true);
+    // await getListBySearchQuery('pizza tax sean', 'wy', true);
 
 })();
 
 async function getDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
-    const sosApi = new SosApi(process.env.cobaltIntApiKey);
+    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
 
     const details = await sosApi.getBusinessDetails(businessName, state, liveData, screenshot, uccData, street, city, zip);
 
-    console.log('details', details, details?.results?.[0]?.uccData);
+    console.log('details', details, details?.results?.[0]?.uccData, details?.results?.[0]?.documents);
 }
 
 async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
-    const sosApi = new SosApi(process.env.cobaltIntApiKey);
+    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
 
     const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData, screenshot, uccData, street, city, zip);
 
