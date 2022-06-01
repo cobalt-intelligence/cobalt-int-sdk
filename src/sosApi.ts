@@ -18,8 +18,8 @@ export class SosApi {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
         }
 
-        if (liveData) {
-            url += '&liveData=true';
+        if (liveData === false) {
+            url += '&liveData=false';
         }
 
         if (screenshot) {
@@ -70,8 +70,8 @@ export class SosApi {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
         }
 
-        if (liveData) {
-            url += '&liveData=true';
+        if (liveData === false) {
+            url += '&liveData=false';
         }
 
         if (screenshot) {
@@ -122,8 +122,8 @@ export class SosApi {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search/list?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
         }
 
-        if (liveData) {
-            url += '&liveData=true';
+        if (liveData === false) {
+            url += '&liveData=false';
         }
 
         const axiosResponse = await axios.get(url, {
