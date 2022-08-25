@@ -18,8 +18,8 @@ export class SosApi {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
         }
 
-        if (liveData) {
-            url += '&liveData=true';
+        if (liveData === false) {
+            url += '&liveData=false';
         }
 
         if (screenshot) {
@@ -70,8 +70,8 @@ export class SosApi {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
         }
 
-        if (liveData) {
-            url += '&liveData=true';
+        if (liveData === false) {
+            url += '&liveData=false';
         }
 
         if (screenshot) {
@@ -103,6 +103,38 @@ export class SosApi {
         // This will take longer
         if (axiosResponse.data?.retryId) {
             return await this.retryBusinessDetails(axiosResponse.data.retryId, 0, screenshot);
+        }
+
+        return axiosResponse.data;
+    }
+
+    /**
+     * This function will handle any long polling and return the business details of any business
+     * if found.
+     * @param sosId 
+     * @param state 
+     * @returns 
+     */
+    public async getListBySearchQuery(businessName: string, state: string, liveData?: boolean): Promise<IResponseBody> {
+        let url = `https://apigateway.cobaltintelligence.com/v1/search/list?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
+
+        if (this.targetedEnvironment) {
+            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search/list?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
+        }
+
+        if (liveData === false) {
+            url += '&liveData=false';
+        }
+
+        const axiosResponse = await axios.get(url, {
+            headers: {
+                'x-api-key': this.apiKey
+            }
+        });
+
+        // This will take longer
+        if (axiosResponse.data?.retryId) {
+            return await this.retryBusinessDetails(axiosResponse.data.retryId, 0);
         }
 
         return axiosResponse.data;
@@ -157,31 +189,15 @@ export class SosApi {
             url += '&screenshot=true';
         }
 
-        if (uccData) {
-            url += '&uccData=true';
-        }
-
-        if (street) {
-            url += `&street=${street}`;
-        }
-
-        if (city) {
-            url += `&city=${city}`;
-        }
-
-        if (zip) {
-            url += `&zip=${zip}`;
-        }
-
         const axiosResponse = await axios.get(url, {
             headers: {
                 'x-api-key': this.apiKey
             }
         });
 
-        // Functions timeout after 90 seconds
+        // Functions timeout after 90 attempts
         if (retryCount > 90) {
-            return { message: 'Passed 90 seconds of retries. Something must have gone wrong. Sorry.' };
+            return { message: 'Passed 90 attempts of retries. Something must have gone wrong. Sorry.' };
         }
 
         if (axiosResponse.data?.status === 'Incomplete') {

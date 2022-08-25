@@ -33,9 +33,11 @@ dotenv.config();
     // await searchAllStates();
     
     // Get by name
-    await getDetails('tax & accounting', 'nj', true, null, null, null, 'hightstown', null);
+    await getDetails('pizza', 'ca', false, true, null, null, null, null);
 
-    // await getDetailsBySosId('937294', 'oh', true, true, true);
+    // await getDetailsBySosId('2109131112324', 'sc', true, true, true);
+
+    // await getListBySearchQuery('pizza tax sean', 'wy', true);
 
 })();
 
@@ -44,7 +46,7 @@ async function getDetails(businessName: string, state: string, liveData?: boolea
 
     const details = await sosApi.getBusinessDetails(businessName, state, liveData, screenshot, uccData, street, city, zip);
 
-    console.log('details', details, details?.results?.[0]?.uccData);
+    console.log('details', details, details?.results?.[0]?.uccData, details?.results?.[0]?.documents);
 }
 
 async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
@@ -55,12 +57,12 @@ async function getDetailsBySosId(sosId: string, state: string, liveData?: boolea
     console.log('details', details);
 }
 
-async function getDelinquentTaxes() {
-    const delinquentTaxApi = new DelinquentTaxApi(process.env.cobaltIntApiKey);
+async function getListBySearchQuery(searchQuery: string, state: string, liveData?: boolean) {
+    const sosApi = new SosApi(process.env.cobaltIntApiKey);
 
-    const response = await delinquentTaxApi.getDelinquentTaxes({ greaterThan: 500, delinquentYears: [2018] });
+    const details = await sosApi.getListBySearchQuery(searchQuery, state, liveData);
 
-    console.log('Records', response.totalRecords, response.records[0], response.records[25]);
+    console.log('details', details);
 }
 
 async function searchAllStates() {
@@ -70,12 +72,4 @@ async function searchAllStates() {
 
     console.log('Results', results);
 
-}
-
-async function getParcelInformation(parcelNumber: string, county: string, state: string) {
-    const countyAssessorApi = new CountyAssessorApi(process.env.cobaltIntApiKey);
-
-    const parcel = await countyAssessorApi.getParcelInformation(parcelNumber, county, state);
-
-    console.log('parcel', parcel);
 }
