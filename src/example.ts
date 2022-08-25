@@ -57,6 +57,14 @@ async function getDetailsBySosId(sosId: string, state: string, liveData?: boolea
     console.log('details', details);
 }
 
+async function getDetailsByName(firstname: string, lastname: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
+    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
+
+    const details = await sosApi.getBusinessDetailsByName(firstname, lastname, state, liveData, screenshot, uccData, street, city, zip);
+
+    console.log('details', details);
+}
+
 async function getListBySearchQuery(searchQuery: string, state: string, liveData?: boolean) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey);
 
