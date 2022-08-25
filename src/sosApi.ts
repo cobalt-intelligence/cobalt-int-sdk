@@ -195,9 +195,9 @@ export class SosApi {
             }
         });
 
-        // Functions timeout after 90 seconds
+        // Functions timeout after 90 attempts
         if (retryCount > 90) {
-            return { message: 'Passed 90 seconds of retries. Something must have gone wrong. Sorry.' };
+            return { message: 'Passed 90 attempts of retries. Something must have gone wrong. Sorry.' };
         }
 
         if (axiosResponse.data?.status === 'Incomplete') {
