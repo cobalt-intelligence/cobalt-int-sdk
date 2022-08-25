@@ -186,7 +186,7 @@ export class SosApi {
     * @param state 
     * @returns 
     */
-    public async getBusinessDetailsByName(firstname: string, lastname: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
+    public async getDetailsByPersonName(firstname: string, lastname: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
         const fullName = `${firstname}, ${lastname}`.trim();
         let url = `https://apigateway.cobaltintelligence.com/v1/search?searchByPersonQuery=${encodeURIComponent(fullName)}&state=${state}`;
 
