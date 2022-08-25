@@ -37,7 +37,10 @@ dotenv.config();
 
     // await getDetailsBySosId('2109131112324', 'sc', true, true, true);
 
+    // await getDetailsByName('Jacob', 'SEMERAD', 'wisconsin', true, false, false, null, null, null);
+
     // await getListBySearchQuery('pizza tax sean', 'wy', true);
+
 
 })();
 
