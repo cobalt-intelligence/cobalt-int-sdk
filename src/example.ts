@@ -37,7 +37,10 @@ dotenv.config();
 
     // await getDetailsBySosId('2109131112324', 'sc', true, true, true);
 
+    // await getDetailsByPersonName('Jacob', 'SEMERAD', 'wisconsin', true, false, false, null, null, null);
+
     // await getListBySearchQuery('pizza tax sean', 'wy', true);
+
 
 })();
 
@@ -53,6 +56,14 @@ async function getDetailsBySosId(sosId: string, state: string, liveData?: boolea
     const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
 
     const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData, screenshot, uccData, street, city, zip);
+
+    console.log('details', details);
+}
+
+async function getDetailsByPersonName(firstname: string, lastname: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
+    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
+
+    const details = await sosApi.getDetailsByPersonName(firstname, lastname, state, liveData, screenshot, uccData, street, city, zip);
 
     console.log('details', details);
 }

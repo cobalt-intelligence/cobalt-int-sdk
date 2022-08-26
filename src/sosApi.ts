@@ -178,6 +178,61 @@ export class SosApi {
         return results;
     }
 
+    /**
+    * This function will handle any long polling and return the business details of any business
+    * if found.
+    * @param firstname
+    * @param lastname 
+    * @param state 
+    * @returns 
+    */
+    public async getDetailsByPersonName(firstname: string, lastname: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
+        const fullName = `${firstname}, ${lastname}`.trim();
+        let url = `https://apigateway.cobaltintelligence.com/v1/search?searchByPersonQuery=${encodeURIComponent(fullName)}&state=${state}`;
+
+        if (this.targetedEnvironment) {
+            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchByPersonQuery=${encodeURIComponent(fullName)}&state=${state}`;
+        }
+
+        if (liveData) {
+            url += '&liveData=true';
+        }
+
+        if (screenshot) {
+            url += '&screenshot=true';
+        }
+
+        if (uccData) {
+            url += '&uccData=true';
+        }
+
+        if (street) {
+            url += `&street=${street}`;
+        }
+
+        if (city) {
+            url += `&city=${city}`;
+        }
+
+        if (zip) {
+            url += `&zip=${zip}`;
+        }
+
+        const axiosResponse = await axios.get(url, {
+            headers: {
+                'x-api-key': this.apiKey
+            }
+        });
+
+        // This will take longer
+        if (axiosResponse.data?.retryId) {
+            return await this.retryBusinessDetails(axiosResponse.data.retryId, 0, screenshot);
+        }
+
+        return axiosResponse.data;
+    }
+
+
     private async retryBusinessDetails(retryId: string, retryCount = 0, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?retryId=${retryId}`;
 
