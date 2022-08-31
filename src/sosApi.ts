@@ -186,8 +186,8 @@ export class SosApi {
     * @param state 
     * @returns 
     */
-    public async getDetailsByPersonName(firstname: string, lastname: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
-        const fullName = `${firstname}, ${lastname}`.trim();
+    public async getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
+        const fullName = `${firstName ? firstName : ''}, ${lastName? lastName : ''}`.trim();
         let url = `https://apigateway.cobaltintelligence.com/v1/search?searchByPersonQuery=${encodeURIComponent(fullName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
