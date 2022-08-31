@@ -181,17 +181,17 @@ export class SosApi {
     /**
     * This function will handle any long polling and return the business details of any business
     * if found.
-    * @param firstname
-    * @param lastname 
+    * @param firstName
+    * @param lastName 
     * @param state 
     * @returns 
     */
     public async getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
-        const fullName = `${firstName ? firstName : ''}, ${lastName? lastName : ''}`.trim();
-        let url = `https://apigateway.cobaltintelligence.com/v1/search?searchByPersonQuery=${encodeURIComponent(fullName)}&state=${state}`;
+
+        let url = `https://apigateway.cobaltintelligence.com/v1/search?searchByPersonFirstName=${encodeURIComponent(firstName)}&searchByPersonLastName=${encodeURIComponent(lastName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
-            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchByPersonQuery=${encodeURIComponent(fullName)}&state=${state}`;
+            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchByPersonFirstName=${encodeURIComponent(firstName)}&searchByPersonLastName=${encodeURIComponent(lastName)}&state=${state}`;
         }
 
         if (liveData) {
