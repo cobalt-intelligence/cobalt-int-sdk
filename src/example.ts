@@ -37,7 +37,7 @@ dotenv.config();
 
     // await getDetailsBySosId('7067424', 'pennsylvania', true, true, true);
 
-    await getDetailsByPersonName('Peter', 'A', 'arizona', true, false, false, null, null, null);
+    await getDetailsByPersonName('Peter', '', 'alaska', true, false, false, null, null, null);
 
     // await getListBySearchQuery('pizza tax sean', 'wy', true);
 
