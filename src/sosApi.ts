@@ -18,7 +18,7 @@ export class SosApi {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
         }
 
-        if (liveData === false) {
+        if (!liveData) {
             url += '&liveData=false';
         }
 
@@ -70,7 +70,7 @@ export class SosApi {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
         }
 
-        if (liveData === false) {
+        if (!liveData) {
             url += '&liveData=false';
         }
 
@@ -122,7 +122,7 @@ export class SosApi {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search/list?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
         }
 
-        if (liveData === false) {
+        if (!liveData) {
             url += '&liveData=false';
         }
 
