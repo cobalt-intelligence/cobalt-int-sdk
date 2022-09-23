@@ -194,8 +194,8 @@ export class SosApi {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchByPersonFirstName=${encodeURIComponent(firstName)}&searchByPersonLastName=${encodeURIComponent(lastName)}&state=${state}`;
         }
 
-        if (liveData) {
-            url += '&liveData=true';
+        if (!liveData) {
+            url += '&liveData=false';
         }
 
         if (screenshot) {
