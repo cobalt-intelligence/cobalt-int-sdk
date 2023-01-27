@@ -33,11 +33,11 @@ dotenv.config();
     // await searchAllStates();
     
     // Get by name
-    // await getDetails("pizza", 'arizona', true, true, true, null, null, null);
+    // await getDetails("mighty", 'md', false);
 
-    // await getDetailsBySosId('7067424', 'pennsylvania', true, true, true);
+    await getDetailsBySosId('70674247', 'pennsylvania', false);
 
-    await getDetailsByPersonName('Peter', '', 'alaska', true, false, false, null, null, null);
+    // await getDetailsByPersonName('Peter', '', 'alaska', true, false, false, null, null, null);
 
     // await getListBySearchQuery('pizza tax sean', 'wy', true);
 
