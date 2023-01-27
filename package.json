@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "start": "rm -rf ./dist && tsc && node ./dist/example",
-    "prepare": "rm -rf ./dist && tsc && npm version patch"
+    "prepare": "rm -rf ./dist && tsc && npm version major"
   },
   "repository": {
     "type": "git",
