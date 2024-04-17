@@ -1,6 +1,6 @@
 {
   "name": "cobalt-int-sdk",
-  "version": "1.0.34",
+  "version": "2.0.1",
   "description": "Wrapper around Cobalt Intelligence services, such as the Secretary of State API.",
   "main": "./dist/index.js",
   "scripts": {

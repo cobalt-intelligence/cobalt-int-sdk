@@ -19,7 +19,7 @@ export class SosApi {
         }
 
         if (liveData === false) {
-            url += '&liveData=false';
+            url += `&liveData=${liveData}`;
         }
 
         if (screenshot) {
@@ -82,7 +82,7 @@ export class SosApi {
         }
 
         if (liveData === false) {
-            url += '&liveData=false';
+            url += `&liveData=${liveData}`;
         }
 
         if (screenshot) {
@@ -134,7 +134,7 @@ export class SosApi {
         }
 
         if (liveData === false) {
-            url += '&liveData=false';
+            url += `&liveData=${liveData}`;
         }
 
         const axiosResponse = await axios.get(url, {
@@ -205,8 +205,8 @@ export class SosApi {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchByPersonFirstName=${encodeURIComponent(firstName)}&searchByPersonLastName=${encodeURIComponent(lastName)}&state=${state}`;
         }
 
-        if (!liveData) {
-            url += '&liveData=false';
+        if (liveData === false) {
+            url += `&liveData=${liveData}`;
         }
 
         if (screenshot) {
@@ -272,9 +272,9 @@ export class SosApi {
             }
         });
 
-        // Functions timeout after 90 attempts
-        if (retryCount > 90) {
-            return { message: 'Passed 90 attempts of retries. Something must have gone wrong. Sorry.' };
+        // Functions timeout after 70 attempts
+        if (retryCount > 70) {
+            return { message: 'Passed 70 attempts of retries. Something must have gone wrong. Sorry.' };
         }
 
         if (axiosResponse.data?.status === 'Incomplete') {

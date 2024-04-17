@@ -30,37 +30,13 @@ dotenv.config();
 
     // test searchAllStatesByBusinessName
     // await searchAllStates();
-
+    
     // Get by name
-    // await getDetails("BLOOD HOUND AUTO RECOVERY LLC", 'kentucky', true, true, true, null, null, null);
-    // await getDetails("dp development llc", 'washington', true, false, false, null, null, null);
-    // await getDetails("a.i.w., inc.", 'washington', true, false, false, null, null, null);
-    // await getDetails("salter az holdings llc", 'washington', true, false, false, null, null, null);
-    // await getDetails("John Jacob Jingheimer Schmitt His Name Is My  Name Toooo SO lets do this", 'washington', true, false, false, null, null, null);
-    // await getDetails("wright management services, ll", 'washington', true, false, false, null, null, null);
-    // await getDetails("AUSGANICA USA, LLC", 'washington', true, false, false, null, null, null);
-    // await getDetails("the feels beauty supply llc", 'washington', true, false, false, null, null, null);
-    // await getDetails("customizit design & fab llc", 'washington', true, false, false, null, null, null);
-    // await getDetails("pizza", 'ohio', true, true, false, null, null, null);
+    // await getDetails("mighty", 'md', false);
 
-    // getDetails("The Pizza Ham Dogs of Detroit", 'washington', true, false, false, null, null, null);
-    // await getDetails("McCoy McKoy LLC", 'wisconsin', true, false, false, null, null, null);
-    // getDetails("Cashless money", 'washington', true, false, false, null, null, null);
-    // getDetails("Pirates", 'washington', true, false, false, null, null, null);
-    // getDetails("Dauntless moon", 'washington', true, false, false, null, null, null);
+    await getDetailsBySosId('70674247', 'pennsylvania', false);
 
-    // await getDetails("pizza", 'ohio', true, false, false, null, null, null);
-    // await getDetails("Pasta", 'ohio', true, false, false, null, null, null);
-    // await getDetails("construction", 'ohio', true, false, false, null, null, null);
-    // await getDetails("C.Moore Quality Const", 'ohio', true, false, false, null, null, null);
-    // await getDetails("Skin By Sarah", 'Massachusetts', true, false, false, null, null, null);
-    // await getDetails("American Adult Day Care Inc", 'Massachusetts', true, false, false, null, null, null);
-    await getDetails("Hillmers on main", 'vermont', true, false, false, null, null, null);
-
-
-    // await getDetailsBySosId('203994774', 'massachusetts', true, true, true);
-
-    // await getDetailsByPersonName('Community CPA & Associates,', '', 'california', false, false, false, null, null, null);
+    // await getDetailsByPersonName('Peter', '', 'alaska', true, false, false, null, null, null);
 
     // await getListBySearchQuery('pizza tax sean', 'wy', true);
 
