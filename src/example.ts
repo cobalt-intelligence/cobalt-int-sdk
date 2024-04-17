@@ -1,7 +1,6 @@
 import { SosApi } from ".";
 import dotenv from 'dotenv';
 import { DelinquentTaxApi } from "./delinquentTaxApi";
-import { IParcel } from "cobalt-int-common";
 import { CountyAssessorApi } from "./countyAssessorApi";
 
 dotenv.config();
@@ -46,10 +45,10 @@ dotenv.config();
 
 async function getDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
-
+    // const sosApi = new SosApi(process.env.jacobAPIKey, 'dev');
     const details = await sosApi.getBusinessDetails(businessName, state, liveData, screenshot, uccData, street, city, zip);
 
-    console.log('details', details, details?.results?.[0]?.uccData, details?.results?.[0]?.documents);
+    console.log('details', details, details?.results?.[0]?.uccData, details?.results?.[0]?.messages, details?.results?.[0]?.documents);
 }
 
 async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
