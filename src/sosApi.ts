@@ -11,7 +11,7 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
+    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
@@ -31,17 +31,24 @@ export class SosApi {
         }
 
         if (street) {
-            url += `&street=${street}`;
+            url += `&street=${encodeURIComponent(street)}`;
         }
 
         if (city) {
-            url += `&city=${city}`;
+            url += `&city=${encodeURIComponent(city)}`;
         }
 
         if (zip) {
-            url += `&zip=${zip}`;
+            url += `&zip=${encodeURIComponent(zip)}`;
         }
 
+        if (callbackUrl) {
+            url += `&callbackUrl=${callbackUrl}`;
+        }
+
+        if (nameAvailabilityCheck) {
+            url += `&nameAvailabilityCheck=${nameAvailabilityCheck}`;
+        }
         const axiosResponse = await axios.get(url, {
             headers: {
                 'x-api-key': this.apiKey
@@ -63,11 +70,15 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
+    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
 
         if (this.targetedEnvironment) {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
+        }
+
+        if (searchQuery) {
+            url += `&searchQuery=${encodeURIComponent(searchQuery)}`;
         }
 
         if (liveData === false) {
@@ -232,6 +243,17 @@ export class SosApi {
         return axiosResponse.data;
     }
 
+    public async getAPIKeyUsage() {
+        const url = 'https://apigateway.cobaltintelligence.com/v1/usage';
+        // get the usage
+        const axiosResponse = await axios.get(url, {
+            headers: {
+                'x-api-key': this.apiKey
+            }
+        });
+        return axiosResponse.data;
+    }
+
 
     private async retryBusinessDetails(retryId: string, retryCount = 0, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?retryId=${retryId}`;
@@ -256,7 +278,6 @@ export class SosApi {
         }
 
         if (axiosResponse.data?.status === 'Incomplete') {
-            console.log('Retrying. Total retry attempts', retryCount);
             retryCount++;
             // Item not ready yet
             // We wait 10 seconds and then try again

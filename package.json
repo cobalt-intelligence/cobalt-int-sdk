@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/cobalt-intelligence/cobalt-int-sdk#readme",
   "dependencies": {
-    "axios": "^0.21.1",
-    "cobalt-int-common": "^1.0.33"
+    "axios": "^1.6.8",
+    "cobalt-int-common": "^1.0.64"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",

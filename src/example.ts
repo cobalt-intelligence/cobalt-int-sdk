@@ -1,7 +1,6 @@
 import { SosApi } from ".";
 import dotenv from 'dotenv';
 import { DelinquentTaxApi } from "./delinquentTaxApi";
-import { IParcel } from "cobalt-int-common";
 import { CountyAssessorApi } from "./countyAssessorApi";
 
 dotenv.config();
