@@ -1,5 +1,6 @@
 import { SosApi } from ".";
 import dotenv from 'dotenv';
+import { TINVerification } from "./sosApi";
 
 dotenv.config();
 
@@ -30,13 +31,16 @@ dotenv.config();
     // await searchAllStates();
     
     // Get by name
-    // await getDetails("mighty", 'md', false);
+    // await getDetails("DEERE & company", 'mo', true, true);
 
-    await getDetailsBySosId('70674247', 'pennsylvania', false);
+    // await getDetailsBySosId('70674247', 'pennsylvania', false);
 
     // await getDetailsByPersonName('Peter', '', 'alaska', true, false, false, null, null, null);
 
     // await getListBySearchQuery('pizza tax sean', 'wy', true);
+
+    // Verify TIN
+    await verifyTIN('473888296', 'aarmora llc');
 
 
 })();
@@ -79,5 +83,12 @@ async function searchAllStates() {
     const results = await sosApi.searchAllStatesByBusinessName('pizza hut llc');
 
     console.log('Results', results);
+}
 
+async function verifyTIN(tin: string, businessName: string) {
+    const tinVerification = new TINVerification(process.env.cobaltIntApiKey);
+
+    const results = await tinVerification.verifyTIN(tin, businessName);
+
+    console.log('Results', results);
 }
