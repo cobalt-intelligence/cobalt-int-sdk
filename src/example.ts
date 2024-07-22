@@ -40,7 +40,7 @@ dotenv.config();
     // await getListBySearchQuery('pizza tax sean', 'wy', true);
 
     // Verify TIN
-    await verifyTIN('473888296', 'aarmora llc');
+    await verifyTIN('123456789', 'frank sanchez llc');
 
 
 })();
