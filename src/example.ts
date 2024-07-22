@@ -1,6 +1,6 @@
 import { SosApi } from ".";
 import dotenv from 'dotenv';
-import { TINVerification } from "./sosApi";
+import { TINVerification } from ".";
 
 dotenv.config();
 

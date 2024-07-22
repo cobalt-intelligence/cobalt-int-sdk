@@ -292,19 +292,3 @@ export class SosApi {
         return new Promise(res => setTimeout(res, ms));
     }
 }
-
-export class TINVerification {
-    constructor(private apiKey: string) { }
-
-    public async verifyTIN(tin: string, businessName: string): Promise<IResponseBody> {
-        const url = `https://apigateway.cobaltintelligence.com/tinVerification?tin=${tin}&businessName=${businessName}`;
-
-        const axiosResponse = await axios.get(url, {
-            headers: {
-                'x-api-key': this.apiKey
-            }
-        });
-
-        return axiosResponse.data;
-    }
-}
