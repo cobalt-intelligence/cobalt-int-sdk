@@ -1,4 +1,4 @@
-{
+https://github.com/cobalt-intelligence/cobalt-int-sdk.gitcurl --location --request GET 'https://apigateway.cobaltintelligence.com/v1/search?searchQuery=businessName&state=stateName' --header 'x-api-key: ****************************'https://apigateway.cobaltintelligence.com/v1/search?searchQuery=businessName&state=stateName****************************{
   "name": "cobalt-int-sdk",
   "version": "2.0.6",
   "description": "Wrapper around Cobalt Intelligence services, such as the Secretary of State API.",
