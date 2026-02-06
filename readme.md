@@ -59,6 +59,19 @@ const details = await sosApi.getBusinessDetailsBySosId('723472347', 'idaho');
 
 console.log('details', details);
 ```
+### `getListBySearchQuery`
+
+This function allows you to just get a list of businesses with that searchQuery.
+
+It can accept a `liveData` parameter.
+
+```
+const sosApi = new SosApi(process.env.cobaltIntApiKey);
+
+const results = await sosApi.getListBySearchQuery('pizza', 'wy');
+
+console.log('Results', results);
+```
 ### `searchAllStatesByBusinessName`
 
 This function allows you to send a business name and search all available states for instances of this business.

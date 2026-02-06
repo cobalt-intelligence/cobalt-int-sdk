@@ -11,15 +11,78 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
+    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
         }
 
-        if (liveData) {
-            url += '&liveData=true';
+        if (liveData === false) {
+            url += `&liveData=${liveData}`;
+        }
+
+        if (screenshot) {
+            url += '&screenshot=true';
+        }
+
+        if (uccData) {
+            url += '&uccData=true';
+        }
+
+        if (street) {
+            url += `&street=${encodeURIComponent(street)}`;
+        }
+
+        if (city) {
+            url += `&city=${encodeURIComponent(city)}`;
+        }
+
+        if (zip) {
+            url += `&zip=${encodeURIComponent(zip)}`;
+        }
+
+        if (callbackUrl) {
+            url += `&callbackUrl=${callbackUrl}`;
+        }
+
+        if (nameAvailabilityCheck) {
+            url += `&nameAvailabilityCheck=${nameAvailabilityCheck}`;
+        }
+        const axiosResponse = await axios.get(url, {
+            headers: {
+                'x-api-key': this.apiKey
+            }
+        });
+
+        // This will take longer
+        if (axiosResponse.data?.retryId) {
+            return await this.retryBusinessDetails(axiosResponse.data.retryId, 0, screenshot);
+        }
+
+        return axiosResponse.data;
+    }
+
+    /**
+     * This function will handle any long polling and return the business details of any business
+     * if found.
+     * @param sosId 
+     * @param state 
+     * @returns 
+     */
+    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string): Promise<IResponseBody> {
+        let url = `https://apigateway.cobaltintelligence.com/v1/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
+
+        if (this.targetedEnvironment) {
+            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
+        }
+
+        if (searchQuery) {
+            url += `&searchQuery=${encodeURIComponent(searchQuery)}`;
+        }
+
+        if (liveData === false) {
+            url += `&liveData=${liveData}`;
         }
 
         if (screenshot) {
@@ -63,35 +126,15 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
-        let url = `https://apigateway.cobaltintelligence.com/v1/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
+    public async getListBySearchQuery(businessName: string, state: string, liveData?: boolean): Promise<IResponseBody> {
+        let url = `https://apigateway.cobaltintelligence.com/v1/search/list?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
-            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
+            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search/list?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
         }
 
-        if (liveData) {
-            url += '&liveData=true';
-        }
-
-        if (screenshot) {
-            url += '&screenshot=true';
-        }
-
-        if (uccData) {
-            url += '&uccData=true';
-        }
-
-        if (street) {
-            url += `&street=${street}`;
-        }
-
-        if (city) {
-            url += `&city=${city}`;
-        }
-
-        if (zip) {
-            url += `&zip=${zip}`;
+        if (liveData === false) {
+            url += `&liveData=${liveData}`;
         }
 
         const axiosResponse = await axios.get(url, {
@@ -102,7 +145,7 @@ export class SosApi {
 
         // This will take longer
         if (axiosResponse.data?.retryId) {
-            return await this.retryBusinessDetails(axiosResponse.data.retryId, 0, screenshot);
+            return await this.retryBusinessDetails(axiosResponse.data.retryId, 0);
         }
 
         return axiosResponse.data;
@@ -146,11 +189,24 @@ export class SosApi {
         return results;
     }
 
-    private async retryBusinessDetails(retryId: string, retryCount = 0, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
-        let url = `https://apigateway.cobaltintelligence.com/v1/search?retryId=${retryId}`;
+    /**
+    * This function will handle any long polling and return the business details of any business
+    * if found.
+    * @param firstName
+    * @param lastName 
+    * @param state 
+    * @returns 
+    */
+    public async getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
+
+        let url = `https://apigateway.cobaltintelligence.com/v1/search?searchByPersonFirstName=${encodeURIComponent(firstName)}&searchByPersonLastName=${encodeURIComponent(lastName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
-            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?retryId=${retryId}`;
+            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchByPersonFirstName=${encodeURIComponent(firstName)}&searchByPersonLastName=${encodeURIComponent(lastName)}&state=${state}`;
+        }
+
+        if (liveData === false) {
+            url += `&liveData=${liveData}`;
         }
 
         if (screenshot) {
@@ -179,13 +235,49 @@ export class SosApi {
             }
         });
 
-        // Functions timeout after 90 seconds
-        if (retryCount > 90) {
-            return { message: 'Passed 90 seconds of retries. Something must have gone wrong. Sorry.' };
+        // This will take longer
+        if (axiosResponse.data?.retryId) {
+            return await this.retryBusinessDetails(axiosResponse.data.retryId, 0, screenshot);
+        }
+
+        return axiosResponse.data;
+    }
+
+    public async getAPIKeyUsage() {
+        const url = 'https://apigateway.cobaltintelligence.com/v1/usage';
+        // get the usage
+        const axiosResponse = await axios.get(url, {
+            headers: {
+                'x-api-key': this.apiKey
+            }
+        });
+        return axiosResponse.data;
+    }
+
+
+    private async retryBusinessDetails(retryId: string, retryCount = 0, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
+        let url = `https://apigateway.cobaltintelligence.com/v1/search?retryId=${retryId}`;
+
+        if (this.targetedEnvironment) {
+            url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?retryId=${retryId}`;
+        }
+
+        if (screenshot) {
+            url += '&screenshot=true';
+        }
+
+        const axiosResponse = await axios.get(url, {
+            headers: {
+                'x-api-key': this.apiKey
+            }
+        });
+
+        // Functions timeout after 70 attempts
+        if (retryCount > 70) {
+            return { message: 'Passed 70 attempts of retries. Something must have gone wrong. Sorry.' };
         }
 
         if (axiosResponse.data?.status === 'Incomplete') {
-            console.log('Retrying. Total retry attempts', retryCount);
             retryCount++;
             // Item not ready yet
             // We wait 10 seconds and then try again

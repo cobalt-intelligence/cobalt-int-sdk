@@ -1,8 +1,6 @@
 import { SosApi } from ".";
 import dotenv from 'dotenv';
-import { DelinquentTaxApi } from "./delinquentTaxApi";
-import { IParcel } from "cobalt-int-common";
-import { CountyAssessorApi } from "./countyAssessorApi";
+import { TINVerification } from ".";
 
 dotenv.config();
 
@@ -33,18 +31,26 @@ dotenv.config();
     // await searchAllStates();
     
     // Get by name
-    await getDetails('tax & accounting', 'nj', true, null, null, null, 'hightstown', null);
+    // await getDetails("DEERE & company", 'mo', true, true);
 
-    // await getDetailsBySosId('937294', 'oh', true, true, true);
+    // await getDetailsBySosId('70674247', 'pennsylvania', false);
+
+    // await getDetailsByPersonName('Peter', '', 'alaska', true, false, false, null, null, null);
+
+    // await getListBySearchQuery('pizza tax sean', 'wy', true);
+
+    // Verify TIN
+    await verifyTIN('123456789', 'frank sanchez llc');
+
 
 })();
 
 async function getDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
-
+    // const sosApi = new SosApi(process.env.jacobAPIKey, 'dev');
     const details = await sosApi.getBusinessDetails(businessName, state, liveData, screenshot, uccData, street, city, zip);
 
-    console.log('details', details, details?.results?.[0]?.uccData);
+    console.log('details', details, details?.results?.[0]?.uccData, details?.results?.[0]?.messages, details?.results?.[0]?.documents);
 }
 
 async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
@@ -55,12 +61,20 @@ async function getDetailsBySosId(sosId: string, state: string, liveData?: boolea
     console.log('details', details);
 }
 
-async function getDelinquentTaxes() {
-    const delinquentTaxApi = new DelinquentTaxApi(process.env.cobaltIntApiKey);
+async function getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
+    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
 
-    const response = await delinquentTaxApi.getDelinquentTaxes({ greaterThan: 500, delinquentYears: [2018] });
+    const details = await sosApi.getDetailsByPersonName(firstName, lastName, state, liveData, screenshot, uccData, street, city, zip);
 
-    console.log('Records', response.totalRecords, response.records[0], response.records[25]);
+    console.log('details', details);
+}
+
+async function getListBySearchQuery(searchQuery: string, state: string, liveData?: boolean) {
+    const sosApi = new SosApi(process.env.cobaltIntApiKey);
+
+    const details = await sosApi.getListBySearchQuery(searchQuery, state, liveData);
+
+    console.log('details', details);
 }
 
 async function searchAllStates() {
@@ -69,13 +83,12 @@ async function searchAllStates() {
     const results = await sosApi.searchAllStatesByBusinessName('pizza hut llc');
 
     console.log('Results', results);
-
 }
 
-async function getParcelInformation(parcelNumber: string, county: string, state: string) {
-    const countyAssessorApi = new CountyAssessorApi(process.env.cobaltIntApiKey);
+async function verifyTIN(tin: string, businessName: string) {
+    const tinVerification = new TINVerification(process.env.cobaltIntApiKey);
 
-    const parcel = await countyAssessorApi.getParcelInformation(parcelNumber, county, state);
+    const results = await tinVerification.verifyTIN(tin, businessName);
 
-    console.log('parcel', parcel);
+    console.log('Results', results);
 }

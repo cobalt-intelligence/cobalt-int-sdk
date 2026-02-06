@@ -1,2 +1,2 @@
 export { SosApi } from './sosApi';
-export { DelinquentTaxApi } from './delinquentTaxApi';
+export { TINVerification } from './tinVerification';
