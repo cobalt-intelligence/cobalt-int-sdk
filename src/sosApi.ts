@@ -11,7 +11,7 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean): Promise<IResponseBody> {
+    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
@@ -49,6 +49,11 @@ export class SosApi {
         if (nameAvailabilityCheck) {
             url += `&nameAvailabilityCheck=${nameAvailabilityCheck}`;
         }
+
+        if (findRelatedBusinesses) {
+            url += `&findRelatedBusinesses=true`;
+        }
+
         const axiosResponse = await axios.get(url, {
             headers: {
                 'x-api-key': this.apiKey
