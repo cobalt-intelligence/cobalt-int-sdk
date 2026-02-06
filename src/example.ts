@@ -45,10 +45,10 @@ dotenv.config();
 
 })();
 
-async function getDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
+async function getDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
     // const sosApi = new SosApi(process.env.jacobAPIKey, 'dev');
-    const details = await sosApi.getBusinessDetails(businessName, state, liveData, screenshot, uccData, street, city, zip);
+    const details = await sosApi.getBusinessDetails(businessName, state, liveData, screenshot, uccData, street, city, zip, callbackUrl, nameAvailabilityCheck, findRelatedBusinesses);
 
     console.log('details', details, details?.results?.[0]?.uccData, details?.results?.[0]?.messages, details?.results?.[0]?.documents);
 }
