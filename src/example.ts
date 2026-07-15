@@ -19,7 +19,7 @@ dotenv.config();
     // await getDetails('STOKESBERRY TRUCKING LLC', 'missouri');
 
     // sosId with colorado
-    await getDetailsBySosId('20151458554', 'colorado', true, false, false, null, null, null, null, 'https://lelfpej2m3.execute-api.us-east-1.amazonaws.com/default/test-api-gateway', false, false);
+    // await getDetailsBySosId('20151458554', 'colorado', true, false, false, null, null, null, null, '', false, false);
 
     // sosId with Delaware
     // await getDetailsBySosId('2011864', 'delaware');
