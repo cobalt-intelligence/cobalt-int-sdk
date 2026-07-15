@@ -3,3 +3,9 @@ src
 node_modules
 *test
 *.csv
+.env
+.env.*
+.npmrc
+.claude
+.github
+updateDeps.sh
