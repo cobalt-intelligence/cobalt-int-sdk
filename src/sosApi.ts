@@ -43,7 +43,7 @@ export class SosApi {
         }
 
         if (callbackUrl) {
-            url += `&callbackUrl=${callbackUrl}`;
+            url += `&callbackUrl=${encodeURIComponent(callbackUrl)}`;
         }
 
         if (nameAvailabilityCheck) {
@@ -99,19 +99,19 @@ export class SosApi {
         }
 
         if (street) {
-            url += `&street=${street}`;
+            url += `&street=${encodeURIComponent(street)}`;
         }
 
         if (city) {
-            url += `&city=${city}`;
+            url += `&city=${encodeURIComponent(city)}`;
         }
 
         if (zip) {
-            url += `&zip=${zip}`;
+            url += `&zip=${encodeURIComponent(zip)}`;
         }
 
         if (callbackUrl) {
-            url += `&callbackUrl=${callbackUrl}`;
+            url += `&callbackUrl=${encodeURIComponent(callbackUrl)}`;
         }
 
         if (nameAvailabilityCheck) {
@@ -235,19 +235,19 @@ export class SosApi {
         }
 
         if (street) {
-            url += `&street=${street}`;
+            url += `&street=${encodeURIComponent(street)}`;
         }
 
         if (city) {
-            url += `&city=${city}`;
+            url += `&city=${encodeURIComponent(city)}`;
         }
 
         if (zip) {
-            url += `&zip=${zip}`;
+            url += `&zip=${encodeURIComponent(zip)}`;
         }
 
         if (callbackUrl) {
-            url += `&callbackUrl=${callbackUrl}`;
+            url += `&callbackUrl=${encodeURIComponent(callbackUrl)}`;
         }
 
         if (nameAvailabilityCheck) {
