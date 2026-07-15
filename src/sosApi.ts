@@ -19,7 +19,7 @@ export class SosApi {
         }
 
         if (liveData === false) {
-            url += `&liveData=${liveData}`;
+            url += '&liveData=false';
         }
 
         if (screenshot) {
@@ -43,11 +43,11 @@ export class SosApi {
         }
 
         if (callbackUrl) {
-            url += `&callbackUrl=${callbackUrl}`;
+            url += `&callbackUrl=${encodeURIComponent(callbackUrl)}`;
         }
 
         if (nameAvailabilityCheck) {
-            url += `&nameAvailabilityCheck=${nameAvailabilityCheck}`;
+            url += '&nameAvailabilityCheck=true';
         }
 
         if (findRelatedBusinesses) {
@@ -75,7 +75,7 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string): Promise<IResponseBody> {
+    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
 
         if (this.targetedEnvironment) {
@@ -87,7 +87,7 @@ export class SosApi {
         }
 
         if (liveData === false) {
-            url += `&liveData=${liveData}`;
+            url += '&liveData=false';
         }
 
         if (screenshot) {
@@ -99,15 +99,27 @@ export class SosApi {
         }
 
         if (street) {
-            url += `&street=${street}`;
+            url += `&street=${encodeURIComponent(street)}`;
         }
 
         if (city) {
-            url += `&city=${city}`;
+            url += `&city=${encodeURIComponent(city)}`;
         }
 
         if (zip) {
-            url += `&zip=${zip}`;
+            url += `&zip=${encodeURIComponent(zip)}`;
+        }
+
+        if (callbackUrl) {
+            url += `&callbackUrl=${encodeURIComponent(callbackUrl)}`;
+        }
+
+        if (nameAvailabilityCheck) {
+            url += '&nameAvailabilityCheck=true';
+        }
+
+        if (findRelatedBusinesses) {
+            url += `&findRelatedBusinesses=true`;
         }
 
         const axiosResponse = await axios.get(url, {
@@ -127,9 +139,9 @@ export class SosApi {
     /**
      * This function will handle any long polling and return the business details of any business
      * if found.
-     * @param sosId 
-     * @param state 
-     * @returns 
+     * @param sosId
+     * @param state
+     * @returns
      */
     public async getListBySearchQuery(businessName: string, state: string, liveData?: boolean): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search/list?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
@@ -139,7 +151,7 @@ export class SosApi {
         }
 
         if (liveData === false) {
-            url += `&liveData=${liveData}`;
+            url += '&liveData=false';
         }
 
         const axiosResponse = await axios.get(url, {
@@ -202,7 +214,7 @@ export class SosApi {
     * @param state 
     * @returns 
     */
-    public async getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
+    public async getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean): Promise<IResponseBody> {
 
         let url = `https://apigateway.cobaltintelligence.com/v1/search?searchByPersonFirstName=${encodeURIComponent(firstName)}&searchByPersonLastName=${encodeURIComponent(lastName)}&state=${state}`;
 
@@ -211,7 +223,7 @@ export class SosApi {
         }
 
         if (liveData === false) {
-            url += `&liveData=${liveData}`;
+            url += '&liveData=false';
         }
 
         if (screenshot) {
@@ -223,15 +235,27 @@ export class SosApi {
         }
 
         if (street) {
-            url += `&street=${street}`;
+            url += `&street=${encodeURIComponent(street)}`;
         }
 
         if (city) {
-            url += `&city=${city}`;
+            url += `&city=${encodeURIComponent(city)}`;
         }
 
         if (zip) {
-            url += `&zip=${zip}`;
+            url += `&zip=${encodeURIComponent(zip)}`;
+        }
+
+        if (callbackUrl) {
+            url += `&callbackUrl=${encodeURIComponent(callbackUrl)}`;
+        }
+
+        if (nameAvailabilityCheck) {
+            url += '&nameAvailabilityCheck=true';
+        }
+
+        if (findRelatedBusinesses) {
+            url += `&findRelatedBusinesses=true`;
         }
 
         const axiosResponse = await axios.get(url, {

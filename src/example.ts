@@ -19,7 +19,7 @@ dotenv.config();
     // await getDetails('STOKESBERRY TRUCKING LLC', 'missouri');
 
     // sosId with colorado
-    // await getDetailsBySosId('20151458554', 'colorado');
+    // await getDetailsBySosId('20151458554', 'colorado', true, false, false, null, null, null, null, '', false, false);
 
     // sosId with Delaware
     // await getDetailsBySosId('2011864', 'delaware');
@@ -40,7 +40,7 @@ dotenv.config();
     // await getListBySearchQuery('pizza tax sean', 'wy', true);
 
     // Verify TIN
-    await verifyTIN('123456789', 'frank sanchez llc');
+    // await verifyTIN('123456789', 'frank sanchez llc');
 
 
 })();
@@ -53,18 +53,18 @@ async function getDetails(businessName: string, state: string, liveData?: boolea
     console.log('details', details, details?.results?.[0]?.uccData, details?.results?.[0]?.messages, details?.results?.[0]?.documents);
 }
 
-async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
+async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
 
-    const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData, screenshot, uccData, street, city, zip);
+    const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData, screenshot, uccData, street, city, zip, searchQuery, callbackUrl, nameAvailabilityCheck, findRelatedBusinesses);
 
     console.log('details', details);
 }
 
-async function getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string) {
+async function getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
 
-    const details = await sosApi.getDetailsByPersonName(firstName, lastName, state, liveData, screenshot, uccData, street, city, zip);
+    const details = await sosApi.getDetailsByPersonName(firstName, lastName, state, liveData, screenshot, uccData, street, city, zip, callbackUrl, nameAvailabilityCheck, findRelatedBusinesses);
 
     console.log('details', details);
 }
