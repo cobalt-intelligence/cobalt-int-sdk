@@ -53,18 +53,18 @@ async function getDetails(businessName: string, state: string, liveData?: boolea
     console.log('details', details, details?.results?.[0]?.uccData, details?.results?.[0]?.messages, details?.results?.[0]?.documents);
 }
 
-async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, businessName?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean) {
+async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
 
-    const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData, screenshot, uccData, street, city, zip, businessName, callbackUrl, nameAvailabilityCheck, findRelatedBusinesses);
+    const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData, screenshot, uccData, street, city, zip, searchQuery, callbackUrl, nameAvailabilityCheck, findRelatedBusinesses);
 
     console.log('details', details);
 }
 
-async function getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callBackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean) {
+async function getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean) {
     const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
 
-    const details = await sosApi.getDetailsByPersonName(firstName, lastName, state, liveData, screenshot, uccData, street, city, zip, callBackUrl, nameAvailabilityCheck, findRelatedBusinesses);
+    const details = await sosApi.getDetailsByPersonName(firstName, lastName, state, liveData, screenshot, uccData, street, city, zip, callbackUrl, nameAvailabilityCheck, findRelatedBusinesses);
 
     console.log('details', details);
 }

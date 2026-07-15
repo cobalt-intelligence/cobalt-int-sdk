@@ -19,7 +19,7 @@ export class SosApi {
         }
 
         if (liveData === false) {
-            url += `&liveData=${liveData}`;
+            url += '&liveData=false';
         }
 
         if (screenshot) {
@@ -47,7 +47,7 @@ export class SosApi {
         }
 
         if (nameAvailabilityCheck) {
-            url += `&nameAvailabilityCheck=${nameAvailabilityCheck}`;
+            url += '&nameAvailabilityCheck=true';
         }
 
         if (findRelatedBusinesses) {
@@ -87,7 +87,7 @@ export class SosApi {
         }
 
         if (liveData === false) {
-            url += `&liveData=${liveData}`;
+            url += '&liveData=false';
         }
 
         if (screenshot) {
@@ -115,7 +115,7 @@ export class SosApi {
         }
 
         if (nameAvailabilityCheck) {
-            url += `&nameAvailabilityCheck=${nameAvailabilityCheck}`;
+            url += '&nameAvailabilityCheck=true';
         }
 
         if (findRelatedBusinesses) {
@@ -151,7 +151,7 @@ export class SosApi {
         }
 
         if (liveData === false) {
-            url += `&liveData=${liveData}`;
+            url += '&liveData=false';
         }
 
         const axiosResponse = await axios.get(url, {
@@ -223,7 +223,7 @@ export class SosApi {
         }
 
         if (liveData === false) {
-            url += `&liveData=${liveData}`;
+            url += '&liveData=false';
         }
 
         if (screenshot) {
@@ -251,7 +251,7 @@ export class SosApi {
         }
 
         if (nameAvailabilityCheck) {
-            url += `&nameAvailabilityCheck=${nameAvailabilityCheck}`;
+            url += '&nameAvailabilityCheck=true';
         }
 
         if (findRelatedBusinesses) {
