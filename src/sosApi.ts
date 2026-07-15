@@ -75,7 +75,7 @@ export class SosApi {
      * @param state 
      * @returns 
      */
-    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string): Promise<IResponseBody> {
+    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
 
         if (this.targetedEnvironment) {
@@ -110,6 +110,18 @@ export class SosApi {
             url += `&zip=${zip}`;
         }
 
+        if (callbackUrl) {
+            url += `&callbackUrl=${callbackUrl}`;
+        }
+
+        if (nameAvailabilityCheck) {
+            url += `&nameAvailabilityCheck=${nameAvailabilityCheck}`;
+        }
+
+        if (findRelatedBusinesses) {
+            url += `&findRelatedBusinesses=true`;
+        }
+
         const axiosResponse = await axios.get(url, {
             headers: {
                 'x-api-key': this.apiKey
@@ -127,9 +139,9 @@ export class SosApi {
     /**
      * This function will handle any long polling and return the business details of any business
      * if found.
-     * @param sosId 
-     * @param state 
-     * @returns 
+     * @param sosId
+     * @param state
+     * @returns
      */
     public async getListBySearchQuery(businessName: string, state: string, liveData?: boolean): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search/list?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
@@ -202,7 +214,7 @@ export class SosApi {
     * @param state 
     * @returns 
     */
-    public async getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string): Promise<IResponseBody> {
+    public async getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean): Promise<IResponseBody> {
 
         let url = `https://apigateway.cobaltintelligence.com/v1/search?searchByPersonFirstName=${encodeURIComponent(firstName)}&searchByPersonLastName=${encodeURIComponent(lastName)}&state=${state}`;
 
@@ -232,6 +244,18 @@ export class SosApi {
 
         if (zip) {
             url += `&zip=${zip}`;
+        }
+
+        if (callbackUrl) {
+            url += `&callbackUrl=${callbackUrl}`;
+        }
+
+        if (nameAvailabilityCheck) {
+            url += `&nameAvailabilityCheck=${nameAvailabilityCheck}`;
+        }
+
+        if (findRelatedBusinesses) {
+            url += `&findRelatedBusinesses=true`;
         }
 
         const axiosResponse = await axios.get(url, {
