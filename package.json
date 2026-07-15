@@ -4,8 +4,10 @@
   "description": "Wrapper around Cobalt Intelligence services, such as the Secretary of State API.",
   "main": "./dist/index.js",
   "scripts": {
-    "start": "rm -rf ./dist && tsc && node ./dist/example",
-    "prepare": "rm -rf ./dist && tsc && npm version patch"
+    "build": "rm -rf ./dist && tsc",
+    "start": "npm run build && node ./dist/example",
+    "prepare": "npm run build",
+    "updateDeps": "bash updateDeps.sh"
   },
   "repository": {
     "type": "git",
@@ -27,13 +29,13 @@
   },
   "homepage": "https://github.com/cobalt-intelligence/cobalt-int-sdk#readme",
   "dependencies": {
-    "axios": "^1.6.8",
-    "cobalt-int-common": "^1.0.64"
+    "axios": "^1.18.1",
+    "cobalt-int-common": "^1.0.82"
   },
   "devDependencies": {
-    "@types/dotenv": "^8.2.0",
-    "@types/node": "^15.12.4",
-    "dotenv": "^10.0.0",
-    "typescript": "^4.3.4"
+    "@types/dotenv": "^8.2.3",
+    "@types/node": "^26.1.1",
+    "dotenv": "^17.4.2",
+    "typescript": "^5.9.3"
   }
 }
