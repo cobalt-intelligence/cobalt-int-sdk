@@ -5,9 +5,10 @@ import { IBusiness, IResponseBody } from 'cobalt-int-common';
 export type SosInclude = 'ucc' | 'ofac' | 'tin';
 
 /**
- * The include= bundle for getBusinessDetails and getBusinessDetailsBySosId. Each include needs its entitlement on the
- * account; asking for one the plan lacks is a 403 that names it. The outcome of each include sits on results[0]
- * (uccData/uccSucceeded, ofac/ofacSucceeded/ofacMessage, tinVerification/tinSucceeded/tinMessage).
+ * The include= bundle for getBusinessDetails and getBusinessDetailsBySosId. An include the account's plan carries is
+ * free with the search; one it does not carry still runs and is billed at that product's standalone rate when it
+ * succeeds. The outcome of each include sits on results[0] (uccData/uccSucceeded, ofac/ofacSucceeded/ofacMessage,
+ * tinVerification/tinSucceeded/tinMessage).
  */
 export interface SosIncludeOptions {
     /** Which verifications to run with the search. */

@@ -62,7 +62,7 @@ console.log('details', details);
 
 ### Including UCC, OFAC and TIN verifications
 
-Plans can carry extra verifications that run with the search and come back on the same result: UCC filings, an OFAC sanctions screen, and an IRS TIN/name match. Pass them as the last argument of `getBusinessDetails` or `getBusinessDetailsBySosId`. Each one needs its entitlement on your account; asking for one your plan does not carry returns a 403 that names it.
+Extra verifications can run with the search and come back on the same result: UCC filings, an OFAC sanctions screen, and an IRS TIN/name match. Pass them as the last argument of `getBusinessDetails` or `getBusinessDetailsBySosId`. Ones your plan carries are free with the search; the others still run and are billed at that product's standalone rate when they succeed.
 
 ```
 const details = await sosApi.getBusinessDetails('Pizza McPizza LLC', 'missouri', undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, {
@@ -76,7 +76,7 @@ console.log(business?.ofacSucceeded, business?.ofac?.matchCount, business?.ofacM
 console.log(business?.tinSucceeded, business?.tinVerification?.status, business?.tinMessage);
 ```
 
-Each include either succeeded (`*Succeeded: true` plus its data) or did not run (`*Succeeded: false` plus a `*Message` saying why); a failed include never fails the search itself. The TIN is echoed back masked. OFAC accepts `ofacSearchType`, `ofacScore` and `ofacSources` in the same options object. The whole request is billed as one search.
+Each include either succeeded (`*Succeeded: true` plus its data) or did not run (`*Succeeded: false` plus a `*Message` saying why); a failed include never fails the search itself and is never billed. The TIN is echoed back masked. OFAC accepts `ofacSearchType`, `ofacScore` and `ofacSources` in the same options object.
 
 ### `getListBySearchQuery`
 
