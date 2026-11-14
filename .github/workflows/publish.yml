@@ -1,0 +1,79 @@
+name: Publish to npm
+# Publishes cobalt-int-sdk when master holds a version the registry does not have yet (a version bump merged
+# through a pull request). Every other push to master ends at the version check and publishes nothing.
+#
+# No token is stored: npm trusts this workflow through OpenID Connect (the package's Trusted Publisher setting on
+# npmjs.com names this repository and this file), so the job needs id-token: write and an npm that speaks it.
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+  id-token: write
+
+# One publish at a time. queue: max keeps every waiting run, so a version bump that merges while two others are
+# ahead of it is still published instead of being replaced by the newest one.
+concurrency:
+  group: publish-npm
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      # Node 24 as in ci.yml, so the release is built and tested the way the pull request was.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          registry-url: 'https://registry.npmjs.org'
+      # Trusted publishing needs npm 11.5.1 or newer; early Node 24 releases ship an older one.
+      - run: npm install --global npm@11
+      - name: Compare the package version with the registry
+        id: version
+        run: |
+          PACKAGE_NAME=$(node --print "require('./package.json').name")
+          PACKAGE_VERSION=$(node --print "require('./package.json').version")
+          if npm view "${PACKAGE_NAME}@${PACKAGE_VERSION}" version > /dev/null 2>&1; then
+            echo "${PACKAGE_NAME}@${PACKAGE_VERSION} is already on the registry; nothing to publish"
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # A release version below the registry's latest (two bumps whose runs finished out of order) goes out
+          # under the backfill tag. Every other publish names no tag, so npm's own checks stay in force: it refuses
+          # to move latest backwards and refuses a prerelease without a tag. A failed lookup stops the run.
+          if ! LATEST_VERSION=$(npm view "${PACKAGE_NAME}" dist-tags.latest); then
+            echo "Could not read the registry's latest version of ${PACKAGE_NAME}; not publishing"
+            exit 1
+          fi
+          RELEASE_VERSION='^[0-9]+\.[0-9]+\.[0-9]+$'
+          DIST_TAG=""
+          if [[ "${PACKAGE_VERSION}" =~ ${RELEASE_VERSION} && "${LATEST_VERSION}" =~ ${RELEASE_VERSION} ]]; then
+            LOWER_VERSION=$(printf '%s\n%s\n' "${PACKAGE_VERSION}" "${LATEST_VERSION}" | sort --version-sort | head -n 1)
+            if [ "${LOWER_VERSION}" = "${PACKAGE_VERSION}" ]; then
+              DIST_TAG=backfill
+            fi
+          fi
+          echo "${PACKAGE_NAME}@${PACKAGE_VERSION} is not on the registry (latest there: ${LATEST_VERSION}); publishing with ${DIST_TAG:-no} tag"
+          echo "publish=true" >> "$GITHUB_OUTPUT"
+          echo "tag=${DIST_TAG}" >> "$GITHUB_OUTPUT"
+      - if: steps.version.outputs.publish == 'true'
+        run: npm ci --legacy-peer-deps
+      - if: steps.version.outputs.publish == 'true'
+        run: npm run build
+      - if: steps.version.outputs.publish == 'true'
+        run: npm test
+      # The prepare script rebuilds dist before the pack; the package's files list keeps src and tests out.
+      - if: steps.version.outputs.publish == 'true'
+        run: |
+          if [ -n "${DIST_TAG}" ]; then
+            npm publish --tag "${DIST_TAG}"
+          else
+            npm publish
+          fi
+        env:
+          DIST_TAG: ${{ steps.version.outputs.tag }}

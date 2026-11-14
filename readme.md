@@ -122,6 +122,10 @@ Tested on Node v12.4.0 and NPM v6.9.0.
 
 `npm install --save cobalt-int-sdk`
 
+## Releasing
+
+A release is a version bump merged to master. Bump the version in the pull request (`npm version patch --no-git-tag-version` changes `package.json` and `package-lock.json`), and on the merge `.github/workflows/publish.yml` builds, tests and publishes that version to npm through npm trusted publishing, with no token. A merge that leaves the version alone publishes nothing, and nobody runs `npm publish` by hand.
+
 ## Built With
 
 * [axios](https://github.com/axios/axios) - axios for web requests
