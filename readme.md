@@ -12,9 +12,11 @@ See examples here - https://github.com/cobalt-intelligence/cobalt-int-sdk/blob/m
 
 This will make the request to the API and handle any long polling or pagination.
 
-Three different APIs are supported:
+These APIs are supported:
 
 [Secretary Of State API](#secretary-of-state-api)
+
+[TIN Verification API](#tin-verification-api)
 
 ## Secretary of State API
 
@@ -82,6 +84,34 @@ const sosApi = new SosApi(process.env.cobaltIntApiKey);
 const results = await sosApi.searchAllStatesByBusinessName('pizza hut llc');
 
 console.log('Results', results);
+```
+
+## TIN Verification API
+
+With your API key, initialize the package:
+
+`const tinVerification = new TINVerification(process.env.cobaltIntApiKey);`
+
+### `verifyTIN`
+
+This checks a TIN and a business name with the IRS. The answer's `status` is `TIN Matched`, `Did Not Match`, `Complete` or `Pending`.
+
+```
+const result = await tinVerification.verifyTIN('000294581', 'Example Harbor Supply Co.');
+
+console.log('result', result);
+```
+
+### `retryTINVerification`
+
+A `Pending` answer has no `irsCode` and carries a `retryId`. This asks again for the result by that `retryId`. A retry is not billed. It answers only an API key of the account that made the check, and only for 30 days after the check; otherwise it answers 404. A malformed `retryId` gets a 400.
+
+```
+if (result.status === 'Pending' && result.retryId) {
+    const retried = await tinVerification.retryTINVerification(result.retryId);
+
+    console.log('retried', retried);
+}
 ```
 
 ### Prerequisites
