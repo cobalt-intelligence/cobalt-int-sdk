@@ -107,7 +107,7 @@ console.log('result', result);
 A `Pending` answer has no `irsCode` and carries a `retryId`. This asks again for the result by that `retryId`. A retry is not billed. It answers only an API key of the account that made the check, and only for 30 days after the check; otherwise it answers 404. A malformed `retryId` gets a 400.
 
 ```
-if (result.status === 'Pending') {
+if (result.status === 'Pending' && result.retryId) {
     const retried = await tinVerification.retryTINVerification(result.retryId);
 
     console.log('retried', retried);
