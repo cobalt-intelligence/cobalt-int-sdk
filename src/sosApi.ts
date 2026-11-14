@@ -2,6 +2,10 @@ import axios from 'axios';
 import { IBusiness, IResponseBody } from 'cobalt-int-common';
 
 export class SosApi {
+    /**
+     * @param apiKey Your Cobalt Intelligence API key, sent in the x-api-key header.
+     * @param targetedEnvironment The API stage the search calls go to. Leave it out to use the production stage, v1.
+     */
     constructor(private apiKey: string, private targetedEnvironment = null) { }
 
     /**

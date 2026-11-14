@@ -1,6 +1,6 @@
 {
   "name": "cobalt-int-sdk",
-  "version": "2.0.9",
+  "version": "2.0.10",
   "description": "Wrapper around Cobalt Intelligence services, such as the Secretary of State API.",
   "main": "./dist/index.js",
   "files": [
@@ -10,6 +10,7 @@
     "build": "rm -rf ./dist && tsc",
     "start": "npm run build && node ./dist/example",
     "prepare": "npm run build",
+    "test": "rm -rf ./.test-build && tsc -p tsconfig.test.json && node --test \".test-build/tests/**/*.test.js\"",
     "updateDeps": "bash updateDeps.sh"
   },
   "repository": {
