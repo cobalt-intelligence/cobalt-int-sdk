@@ -1,6 +1,26 @@
 import axios from 'axios';
 import { IBusiness, IResponseBody } from 'cobalt-int-common';
 
+/** A verification that can ride along with a business search: UCC filings, an OFAC screen or an IRS TIN match. */
+export type SosInclude = 'ucc' | 'ofac' | 'tin';
+
+/**
+ * The include= bundle for getBusinessDetails and getBusinessDetailsBySosId. An include the account's plan carries is
+ * free with the search; one it does not carry still runs and is billed at that product's standalone rate when it
+ * succeeds. The outcome of each include sits on results[0] (uccData/uccSucceeded, ofac/ofacSucceeded/ofacMessage,
+ * tinVerification/tinSucceeded/tinMessage).
+ */
+export interface SosIncludeOptions {
+    /** Which verifications to run with the search. */
+    include: SosInclude[];
+    /** Required when include has 'tin': the nine-digit EIN/TIN to match against the business's legal name. Echoed back masked. */
+    tin?: string;
+    /** OFAC pass-throughs, used when include has 'ofac'. Defaults: every type, score 95, the standard source list. */
+    ofacSearchType?: 'organization' | 'person' | 'vessel' | 'aircraft';
+    ofacScore?: number;
+    ofacSources?: string[];
+}
+
 export class SosApi {
     /**
      * @param apiKey Your Cobalt Intelligence API key, sent in the x-api-key header.
@@ -11,16 +31,19 @@ export class SosApi {
     /**
      * This function will handle any long polling and return the business details of any business
      * if found.
-     * @param businessName 
-     * @param state 
-     * @returns 
+     * @param businessName
+     * @param state
+     * @param includeOptions verifications to run with the search (include=ucc,ofac,tin); ones the plan carries are free, the rest are billed at their standalone rate when they succeed
+     * @returns
      */
-    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean): Promise<IResponseBody> {
+    public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean, includeOptions?: SosIncludeOptions): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
 
         if (this.targetedEnvironment) {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?searchQuery=${encodeURIComponent(businessName)}&state=${state}`;
         }
+
+        url += this.includeQuery(includeOptions);
 
         if (liveData === false) {
             url += '&liveData=false';
@@ -75,16 +98,19 @@ export class SosApi {
     /**
      * This function will handle any long polling and return the business details of any business
      * if found.
-     * @param sosId 
-     * @param state 
-     * @returns 
+     * @param sosId
+     * @param state
+     * @param includeOptions verifications to run with the search (include=ucc,ofac,tin); ones the plan carries are free, the rest are billed at their standalone rate when they succeed
+     * @returns
      */
-    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean): Promise<IResponseBody> {
+    public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean, includeOptions?: SosIncludeOptions): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
 
         if (this.targetedEnvironment) {
             url = `https://apigateway.cobaltintelligence.com/${this.targetedEnvironment}/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;
         }
+
+        url += this.includeQuery(includeOptions);
 
         if (searchQuery) {
             url += `&searchQuery=${encodeURIComponent(searchQuery)}`;
@@ -319,6 +345,27 @@ export class SosApi {
         }
 
         return axiosResponse.data;
+    }
+
+    /** The include= bundle as query parameters, or an empty string when none was asked for. */
+    private includeQuery(options?: SosIncludeOptions): string {
+        if (!options?.include?.length) {
+            return '';
+        }
+        let query = `&include=${encodeURIComponent(options.include.join(','))}`;
+        if (options.tin) {
+            query += `&tin=${encodeURIComponent(options.tin)}`;
+        }
+        if (options.ofacSearchType) {
+            query += `&ofacSearchType=${encodeURIComponent(options.ofacSearchType)}`;
+        }
+        if (options.ofacScore !== undefined) {
+            query += `&ofacScore=${encodeURIComponent(String(options.ofacScore))}`;
+        }
+        if (options.ofacSources?.length) {
+            query += `&ofacSources=${encodeURIComponent(options.ofacSources.join(','))}`;
+        }
+        return query;
     }
 
     private timeout(ms: number) {
