@@ -10,6 +10,7 @@
     "build": "rm -rf ./dist && tsc",
     "start": "npm run build && node ./dist/example",
     "prepare": "npm run build",
+    "test": "rm -rf ./.test-build && tsc -p tsconfig.test.json && node --test \".test-build/tests/**/*.test.js\"",
     "updateDeps": "bash updateDeps.sh"
   },
   "repository": {
@@ -32,7 +33,7 @@
   },
   "homepage": "https://github.com/cobalt-intelligence/cobalt-int-sdk#readme",
   "dependencies": {
-    "axios": "^1.18.1",
+    "axios": "^1.20.0",
     "cobalt-int-common": "^1.0.82"
   },
   "devDependencies": {

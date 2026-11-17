@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { IBusiness, IResponseBody } from 'cobalt-int-common';
 
-/** A verification that can ride along with a business search when the account's plan includes it. */
+/** A verification that can ride along with a business search: UCC filings, an OFAC screen or an IRS TIN match. */
 export type SosInclude = 'ucc' | 'ofac' | 'tin';
 
 /**
@@ -22,6 +22,10 @@ export interface SosIncludeOptions {
 }
 
 export class SosApi {
+    /**
+     * @param apiKey Your Cobalt Intelligence API key, sent in the x-api-key header.
+     * @param targetedEnvironment The API stage the search calls go to. Leave it out to use the production stage, v1.
+     */
     constructor(private apiKey: string, private targetedEnvironment = null) { }
 
     /**
@@ -29,7 +33,7 @@ export class SosApi {
      * if found.
      * @param businessName
      * @param state
-     * @param includeOptions verifications to run with the search (include=ucc,ofac,tin), when the account's plan carries them
+     * @param includeOptions verifications to run with the search (include=ucc,ofac,tin); ones the plan carries are free, the rest are billed at their standalone rate when they succeed
      * @returns
      */
     public async getBusinessDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean, includeOptions?: SosIncludeOptions): Promise<IResponseBody> {
@@ -94,9 +98,10 @@ export class SosApi {
     /**
      * This function will handle any long polling and return the business details of any business
      * if found.
-     * @param sosId 
-     * @param state 
-     * @returns 
+     * @param sosId
+     * @param state
+     * @param includeOptions verifications to run with the search (include=ucc,ofac,tin); ones the plan carries are free, the rest are billed at their standalone rate when they succeed
+     * @returns
      */
     public async getBusinessDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean, includeOptions?: SosIncludeOptions): Promise<IResponseBody> {
         let url = `https://apigateway.cobaltintelligence.com/v1/search?sosId=${encodeURIComponent(sosId)}&state=${state}`;

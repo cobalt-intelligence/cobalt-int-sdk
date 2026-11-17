@@ -12,9 +12,11 @@ See examples here - https://github.com/cobalt-intelligence/cobalt-int-sdk/blob/m
 
 This will make the request to the API and handle any long polling or pagination.
 
-Three different APIs are supported:
+These APIs are supported:
 
 [Secretary Of State API](#secretary-of-state-api)
+
+[TIN Verification API](#tin-verification-api)
 
 ## Secretary of State API
 
@@ -103,6 +105,34 @@ const results = await sosApi.searchAllStatesByBusinessName('pizza hut llc');
 console.log('Results', results);
 ```
 
+## TIN Verification API
+
+With your API key, initialize the package:
+
+`const tinVerification = new TINVerification(process.env.cobaltIntApiKey);`
+
+### `verifyTIN`
+
+This checks a TIN and a business name with the IRS. The answer's `status` is `TIN Matched`, `Did Not Match`, `Complete` or `Pending`.
+
+```
+const result = await tinVerification.verifyTIN('000294581', 'Example Harbor Supply Co.');
+
+console.log('result', result);
+```
+
+### `retryTINVerification`
+
+A `Pending` answer has no `irsCode` and carries a `retryId`. This asks again for the result by that `retryId`. A retry is not billed. It answers only an API key of the account that made the check, and only for 30 days after the check; otherwise it answers 404. A malformed `retryId` gets a 400.
+
+```
+if (result.status === 'Pending' && result.retryId) {
+    const retried = await tinVerification.retryTINVerification(result.retryId);
+
+    console.log('retried', retried);
+}
+```
+
 ### Prerequisites
 
 Tested on Node v12.4.0 and NPM v6.9.0.
@@ -110,6 +140,10 @@ Tested on Node v12.4.0 and NPM v6.9.0.
 ### Installing
 
 `npm install --save cobalt-int-sdk`
+
+## Releasing
+
+A release is a version bump merged to master. Bump the version in the pull request (`npm version patch --no-git-tag-version` changes `package.json` and `package-lock.json`), and on the merge `.github/workflows/publish.yml` builds, tests and publishes that version to npm through npm trusted publishing, with no token. A merge that leaves the version alone publishes nothing, and nobody runs `npm publish` by hand.
 
 ## Built With
 

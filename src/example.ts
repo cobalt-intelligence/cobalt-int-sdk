@@ -42,27 +42,32 @@ dotenv.config();
     // Verify TIN
     // await verifyTIN('123456789', 'frank sanchez llc');
 
+    // Ask again for a Pending TIN result, by the retryId it returned
+    // await retryPendingTINVerification('<retryId from a Pending result>');
+
 
 })();
 
+/** Looks up a business by name and state, and logs the answer. */
 async function getDetails(businessName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean) {
-    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
-    // const sosApi = new SosApi(process.env.jacobAPIKey, 'dev');
+    const sosApi = new SosApi(process.env.cobaltIntApiKey);
     const details = await sosApi.getBusinessDetails(businessName, state, liveData, screenshot, uccData, street, city, zip, callbackUrl, nameAvailabilityCheck, findRelatedBusinesses);
 
     console.log('details', details, details?.results?.[0]?.uccData, details?.results?.[0]?.messages, details?.results?.[0]?.documents);
 }
 
+/** Looks up a business by its Secretary of State id and state, and logs the answer. */
 async function getDetailsBySosId(sosId: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, searchQuery?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean) {
-    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
+    const sosApi = new SosApi(process.env.cobaltIntApiKey);
 
     const details = await sosApi.getBusinessDetailsBySosId(sosId, state, liveData, screenshot, uccData, street, city, zip, searchQuery, callbackUrl, nameAvailabilityCheck, findRelatedBusinesses);
 
     console.log('details', details);
 }
 
+/** Looks up the businesses of a person by name and state, and logs the answer. */
 async function getDetailsByPersonName(firstName: string, lastName: string, state: string, liveData?: boolean, screenshot?: boolean, uccData?: boolean, street?: string, city?: string, zip?: string, callbackUrl?: string, nameAvailabilityCheck?: boolean, findRelatedBusinesses?: boolean) {
-    const sosApi = new SosApi(process.env.cobaltIntApiKey, 'dev');
+    const sosApi = new SosApi(process.env.cobaltIntApiKey);
 
     const details = await sosApi.getDetailsByPersonName(firstName, lastName, state, liveData, screenshot, uccData, street, city, zip, callbackUrl, nameAvailabilityCheck, findRelatedBusinesses);
 
@@ -89,6 +94,15 @@ async function verifyTIN(tin: string, businessName: string) {
     const tinVerification = new TINVerification(process.env.cobaltIntApiKey);
 
     const results = await tinVerification.verifyTIN(tin, businessName);
+
+    console.log('Results', results);
+}
+
+/** Asks again for the result of a Pending TIN verification, by its retryId, and logs the answer. */
+async function retryPendingTINVerification(retryId: string) {
+    const tinVerification = new TINVerification(process.env.cobaltIntApiKey);
+
+    const results = await tinVerification.retryTINVerification(retryId);
 
     console.log('Results', results);
 }
